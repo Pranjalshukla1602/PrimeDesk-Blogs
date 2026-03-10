@@ -1,0 +1,90 @@
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.compact {
+  min-height: 50vh;
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(0, 11, 33, 0.95) 0%, rgba(0, 11, 33, 0.7) 50%, rgba(26, 86, 219, 0.3) 100%),
+    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 800"><rect fill="%23000b21" width="1440" height="800"/><circle cx="200" cy="200" r="300" fill="%231a56db" opacity="0.08"/><circle cx="1200" cy="600" r="400" fill="%23d4a647" opacity="0.05"/></svg>');
+  background-size: cover;
+  background-position: center;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 11, 33, 0.4) 0%, rgba(0, 11, 33, 0.8) 100%);
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 120px 0 80px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.headline {
+  color: var(--white);
+  margin-bottom: 20px;
+  line-height: 1.15;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.subtext {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+.actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+.gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(to top, var(--white), transparent);
+  z-index: 1;
+}
+
+.compact .gradient {
+  height: 60px;
+}
+
+@media (max-width: 640px) {
+  .hero {
+    min-height: 80vh;
+  }
+  .compact {
+    min-height: 40vh;
+  }
+  .content {
+    padding: 100px 0 60px;
+  }
+  .subtext {
+    font-size: 1rem;
+  }
+}

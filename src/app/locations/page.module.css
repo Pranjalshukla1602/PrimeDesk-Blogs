@@ -1,0 +1,58 @@
+.citySection {
+  margin-bottom: 48px;
+}
+
+.cityName {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.5rem;
+  margin-bottom: 24px;
+  color: var(--accent);
+}
+
+.locGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.locCard {
+  padding: 28px;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--gray-100);
+  transition: var(--transition);
+}
+
+.locCard:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+  border-color: var(--accent);
+}
+
+.locIcon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  background: rgba(26, 86, 219, 0.08);
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+
+.locCard h3 {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.locCard p {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .locGrid { grid-template-columns: 1fr; }
+}
