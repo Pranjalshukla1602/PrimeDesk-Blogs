@@ -1,7 +1,6 @@
 import { Inter } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import ClientExtras from '@/components/ClientExtras';
 import { COMPANY } from '@/lib/data';
 
@@ -72,7 +71,6 @@ export default function RootLayout({ children }) {
       <body suppressHydrationWarning style={{ fontFamily: 'var(--font-inter), system-ui, sans-serif' }}>
         <Header />
         <main>{children}</main>
-        <Footer />
         <ClientExtras />
       </body>
     </html>
