@@ -25,7 +25,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className={styles.heading}>Quick Links</h4>
+            <h3 className={styles.heading}>Quick Links</h3>
             <ul className={styles.list}>
               {NAV_LINKS.filter(l => !l.children).map((link) => (
                 <li key={link.href}>
@@ -37,7 +37,7 @@ export default function Footer() {
 
           {/* Services */}
           <div>
-            <h4 className={styles.heading}>Our Services</h4>
+            <h3 className={styles.heading}>Our Services</h3>
             <ul className={styles.list}>
               {PRIMARY_SERVICES.map((s) => (
                 <li key={s.href}>
@@ -49,7 +49,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className={styles.heading}>Contact</h4>
+            <h3 className={styles.heading}>Contact</h3>
             <ul className={styles.contactList}>
               {COMPANY.phone.map((p) => (
                 <li key={p} className={styles.contactItem}>

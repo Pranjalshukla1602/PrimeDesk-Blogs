@@ -41,7 +41,7 @@ export default function ContactPage() {
                     <card.icon size={24} />
                   </div>
                   <div>
-                    <h4>{card.title}</h4>
+                    <h3>{card.title}</h3>
                     <span className={styles.infoSubtitle}>{card.subtitle}</span>
                     {card.items.map((item, j) => (
                       <p key={j} className={styles.infoItem}>

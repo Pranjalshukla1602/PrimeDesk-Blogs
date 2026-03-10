@@ -66,7 +66,7 @@ export default function HomePage() {
                 <div className={styles.locImage}>
                   <Icons.Building2 size={32} />
                 </div>
-                <h4>{loc.name}</h4>
+                <h3>{loc.name}</h3>
                 <span className={styles.locCity}>{loc.city}</span>
                 <p className={styles.locDesc}>{loc.description}</p>
               </div>
@@ -117,7 +117,7 @@ export default function HomePage() {
                   <div className={styles.featureIcon}>
                     <Icon size={24} />
                   </div>
-                  <h4>{feature.title}</h4>
+                  <h3>{feature.title}</h3>
                   <p>{feature.description}</p>
                 </div>
               );

@@ -67,7 +67,7 @@ export default function AboutPage() {
               return (
                 <div key={i} className={styles.featureItem}>
                   <div className={styles.featureIcon}><Icon size={24} /></div>
-                  <h4>{f.title}</h4>
+                  <h3>{f.title}</h3>
                   <p>{f.description}</p>
                 </div>
               );
