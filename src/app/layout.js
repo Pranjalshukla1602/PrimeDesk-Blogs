@@ -2,9 +2,9 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import WhatsAppButton from '@/components/WhatsAppButton';
-import StickyMobileCTA from '@/components/StickyMobileCTA';
+import ClientExtras from '@/components/ClientExtras';
 import { COMPANY } from '@/lib/data';
+
 
 const inter = Inter({
   subsets: ['latin'],
@@ -69,12 +69,11 @@ export default function RootLayout({ children }) {
           }}
         />
       </head>
-      <body style={{ fontFamily: 'var(--font-inter), system-ui, sans-serif' }}>
+      <body suppressHydrationWarning style={{ fontFamily: 'var(--font-inter), system-ui, sans-serif' }}>
         <Header />
         <main>{children}</main>
         <Footer />
-        <WhatsAppButton />
-        <StickyMobileCTA />
+        <ClientExtras />
       </body>
     </html>
   );

@@ -1,13 +1,15 @@
 import Link from 'next/link';
+import { Suspense, lazy } from 'react';
 import HeroSection from '@/components/HeroSection';
 import ServiceCard from '@/components/ServiceCard';
-import StatsCounter from '@/components/StatsCounter';
-import TestimonialSlider from '@/components/TestimonialSlider';
-import CTABanner from '@/components/CTABanner';
-import ExitIntentPopup from '@/components/ExitIntentPopup';
 import { COMPANY, CITIES, PRIMARY_SERVICES, FEATURES, LOCATIONS } from '@/lib/data';
 import * as Icons from 'lucide-react';
 import styles from './page.module.css';
+
+const StatsCounter = lazy(() => import('@/components/StatsCounter'));
+const TestimonialSlider = lazy(() => import('@/components/TestimonialSlider'));
+const CTABanner = lazy(() => import('@/components/CTABanner'));
+const ExitIntentPopup = lazy(() => import('@/components/ExitIntentPopup'));
 
 export const metadata = {
   title: 'Managed Office & Coworking Spaces in Hyderabad - PrimeDesk',
@@ -97,7 +99,7 @@ export default function HomePage() {
       </section>
 
       {/* Stats */}
-      <StatsCounter />
+      <Suspense><StatsCounter /></Suspense>
 
       {/* Features */}
       <section className="section">
@@ -125,13 +127,13 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials */}
-      <TestimonialSlider />
+      <Suspense><TestimonialSlider /></Suspense>
 
       {/* CTA */}
-      <CTABanner />
+      <Suspense><CTABanner /></Suspense>
 
       {/* Exit Intent */}
-      <ExitIntentPopup />
+      <Suspense><ExitIntentPopup /></Suspense>
     </>
   );
 }

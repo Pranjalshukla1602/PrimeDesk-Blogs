@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   trailingSlash: true,
+  experimental: {
+    optimizeCss: true,
+  },
   images: {
     remotePatterns: [
       {
