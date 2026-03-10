@@ -3,7 +3,8 @@ import { Suspense, lazy } from 'react';
 import HeroSection from '@/components/HeroSection';
 import ServiceCard from '@/components/ServiceCard';
 import { COMPANY, CITIES, PRIMARY_SERVICES, FEATURES, LOCATIONS } from '@/lib/data';
-import * as Icons from 'lucide-react';
+import { Building2 } from 'lucide-react';
+import { getIcon } from '@/lib/icons';
 import styles from './page.module.css';
 
 const StatsCounter = lazy(() => import('@/components/StatsCounter'));
@@ -64,7 +65,7 @@ export default function HomePage() {
             {LOCATIONS.slice(0, 4).map((loc, i) => (
               <div key={i} className={styles.locCard}>
                 <div className={styles.locImage}>
-                  <Icons.Building2 size={32} />
+                  <Building2 size={32} />
                 </div>
                 <h3>{loc.name}</h3>
                 <span className={styles.locCity}>{loc.city}</span>
@@ -111,7 +112,7 @@ export default function HomePage() {
           </div>
           <div className="grid grid--4">
             {FEATURES.map((feature, i) => {
-              const Icon = Icons[feature.icon] || Icons.Check;
+              const Icon = getIcon(feature.icon);
               return (
                 <div key={i} className={styles.featureCard}>
                   <div className={styles.featureIcon}>

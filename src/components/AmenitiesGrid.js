@@ -1,4 +1,4 @@
-import * as Icons from 'lucide-react';
+import { getIcon } from '@/lib/icons';
 import { AMENITIES } from '@/lib/data';
 import styles from './AmenitiesGrid.module.css';
 
@@ -13,7 +13,7 @@ export default function AmenitiesGrid() {
         </div>
         <div className={styles.grid}>
           {AMENITIES.map((item, i) => {
-            const Icon = Icons[item.icon] || Icons.Check;
+            const Icon = getIcon(item.icon);
             return (
               <div key={i} className={styles.item}>
                 <div className={styles.iconWrap}>

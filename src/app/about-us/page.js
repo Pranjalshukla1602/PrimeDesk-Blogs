@@ -2,7 +2,7 @@ import HeroSection from '@/components/HeroSection';
 import StatsCounter from '@/components/StatsCounter';
 import CTABanner from '@/components/CTABanner';
 import { COMPANY, TEAM, FEATURES } from '@/lib/data';
-import * as Icons from 'lucide-react';
+import { getIcon } from '@/lib/icons';
 import styles from './page.module.css';
 
 export const metadata = {
@@ -40,7 +40,7 @@ export default function AboutPage() {
           </div>
           <div className={styles.valuesGrid}>
             {values.map((v, i) => {
-              const Icon = Icons[v.icon] || Icons.Star;
+              const Icon = getIcon(v.icon, 'Star');
               return (
                 <div key={i} className={styles.valueCard}>
                   <div className={styles.valueIcon}><Icon size={28} /></div>
@@ -63,7 +63,7 @@ export default function AboutPage() {
           </div>
           <div className="grid grid--4">
             {FEATURES.slice(0, 4).map((f, i) => {
-              const Icon = Icons[f.icon] || Icons.Check;
+              const Icon = getIcon(f.icon);
               return (
                 <div key={i} className={styles.featureItem}>
                   <div className={styles.featureIcon}><Icon size={24} /></div>

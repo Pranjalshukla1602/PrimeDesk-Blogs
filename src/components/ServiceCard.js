@@ -1,9 +1,10 @@
 import Link from 'next/link';
-import * as Icons from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import { getIcon } from '@/lib/icons';
 import styles from './ServiceCard.module.css';
 
 export default function ServiceCard({ title, description, href, icon, index = 0 }) {
-  const IconComponent = Icons[icon] || Icons.Building2;
+  const IconComponent = getIcon(icon, 'Building2');
 
   return (
     <Link href={href} className={styles.card} style={{ animationDelay: `${index * 0.1}s` }}>
@@ -14,7 +15,7 @@ export default function ServiceCard({ title, description, href, icon, index = 0 
       <p className={styles.desc}>{description}</p>
       <span className={styles.link}>
         Know More
-        <Icons.ArrowRight size={16} />
+        <ArrowRight size={16} />
       </span>
     </Link>
   );
