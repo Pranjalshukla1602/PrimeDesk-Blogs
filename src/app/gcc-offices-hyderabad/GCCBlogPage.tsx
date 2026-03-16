@@ -762,6 +762,7 @@ import { useState, useEffect, useRef } from 'react';
 import './primedesk.css';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
+import AuthorCard from '@/components/AuthorCard';
 import emailjs from '@emailjs/browser';
 
 export default function GCCBlogPage() {
@@ -1580,6 +1581,9 @@ export default function GCCBlogPage() {
           </div>
         </div>
       </div>
+
+      {/*  ══════ ABOUT THE AUTHOR ══════  */}
+      <AuthorCard />
 
       {/*  ══════ BOTTOM CTA ══════  */}
       <div className="bottom-cta-section">
