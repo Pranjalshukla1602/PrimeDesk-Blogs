@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { NAV_LINKS } from '@/lib/data';
@@ -39,7 +40,7 @@ export default function Header() {
     <header className={`${styles.header} ${isScrolled ? styles.scrolled : ''}`}>
       <div className={`container ${styles.inner}`}>
         <Link href={BASE_URL} className={styles.logo}>
-          <img src="https://primedesk.co.in/wp-content/uploads/2025/05/WhatsApp_Image_2025-05-26_at_3.19.51_PM__2_-removebg-preview-e1748493491575.png" alt="PrimeDesk Logo" className={styles.logoImg} />
+          <Image src="https://primedesk.co.in/wp-content/uploads/2025/05/WhatsApp_Image_2025-05-26_at_3.19.51_PM__2_-removebg-preview-e1748493491575.png" alt="PrimeDesk Logo" width={150} height={40} className={styles.logoImg} priority />
         </Link>
 
         <nav className={`${styles.nav} ${isOpen ? styles.navOpen : ''}`}>

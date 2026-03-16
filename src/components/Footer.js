@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Instagram, Facebook, Linkedin, Youtube, Phone, Mail, MapPin, ChevronRight } from 'lucide-react';
 import { COMPANY, NAV_LINKS, PRIMARY_SERVICES } from '@/lib/data';
 import styles from './Footer.module.css';
@@ -20,7 +21,7 @@ export default function Footer() {
       {/* Top Banner */}
       <div className={styles.topSection}>
         <Link href={BASE_URL} className={styles.logo}>
-          <img src="https://primedesk.co.in/wp-content/uploads/2025/05/WhatsApp_Image_2025-05-26_at_3.19.51_PM__2_-removebg-preview-e1748493491575.png" alt="PrimeDesk" className={styles.logoSvg} style={{ objectFit: 'contain' }} onError={(e) => { e.target.style.display = 'none'; e.target.nextElementSibling.style.display = 'block'; }} />
+          <Image src="https://primedesk.co.in/wp-content/uploads/2025/05/WhatsApp_Image_2025-05-26_at_3.19.51_PM__2_-removebg-preview-e1748493491575.png" alt="PrimeDesk" width={150} height={40} className={styles.logoSvg} style={{ objectFit: 'contain' }} />
           <span style={{ display: 'none' }} className={styles.brandName}>PRIMEDESK</span>
         </Link>
         <p className={styles.brandDesc}>

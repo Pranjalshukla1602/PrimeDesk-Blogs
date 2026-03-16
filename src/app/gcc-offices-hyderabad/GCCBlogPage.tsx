@@ -1019,16 +1019,16 @@ export default function GCCBlogPage() {
                 <p className="modal-sub">Curated enterprise office options shared within 24–48 hours.</p>
 
                 {/* Progress */}
-                <div className="prog-wrap"><div className="prog-bar" style={{ width: formStep === 'phone' ? '50%' : '100%' }}></div></div>
+                <div className="prog-wrap" role="progressbar" aria-valuenow={formStep === 'phone' ? 50 : 100} aria-valuemin={0} aria-valuemax={100} aria-label="Form progress"><div className="prog-bar" style={{ width: formStep === 'phone' ? '50%' : '100%' }}></div></div>
 
                 {formStep === 'phone' && (
                   <div className="step active">
                     <form onSubmit={handlePhoneSubmit}>
                       <div className="field">
-                        <label style={{ fontSize: "12px", fontWeight: "600", color: "var(--navy)", display: "block", marginBottom: "5px" }}>Your Phone Number</label>
+                        <label htmlFor="modal-phone" style={{ fontSize: "12px", fontWeight: "600", color: "var(--navy)", display: "block", marginBottom: "5px" }}>Your Phone Number</label>
                         <div className="phone-row">
-                          <span className="phone-prefix">🇮🇳 +91</span>
-                          <input type="tel" className="phone-input" placeholder="Enter 10-digit number" maxLength={10} required value={phone} onChange={(e) => setPhone(e.target.value)} />
+                          <span className="phone-prefix" aria-hidden="true">🇮🇳 +91</span>
+                          <input id="modal-phone" type="tel" className="phone-input" placeholder="Enter 10-digit number" maxLength={10} required value={phone} onChange={(e) => setPhone(e.target.value)} autoComplete="tel" />
                         </div>
                       </div>
                       <button type="submit" className="submit-btn" disabled={phone.length < 10 || isSubmittingPhone}>
@@ -1042,7 +1042,7 @@ export default function GCCBlogPage() {
                 {formStep === 'details' && (
                   <div className="step active">
                     <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px" }}>
-                      <button type="button" onClick={() => setFormStep('phone')} style={{ background: "#f1f5f9", border: "none", borderRadius: "50%", width: "28px", height: "28px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, cursor: "pointer" }}><svg width="13" height="13" fill="none" stroke="#475569" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6" /></svg></button>
+                      <button type="button" aria-label="Go back to phone number step" onClick={() => setFormStep('phone')} style={{ background: "#f1f5f9", border: "none", borderRadius: "50%", width: "28px", height: "28px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, cursor: "pointer" }}><svg width="13" height="13" fill="none" stroke="#475569" strokeWidth="2.5" viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6" /></svg></button>
                       <div>
                         <div className="hfc-title" style={{ fontSize: "16px", margin: 0 }}>Almost There!</div>
                         <p className="hfc-sub" style={{ margin: 0 }}>Share a few details to match the best spaces</p>
@@ -1050,12 +1050,13 @@ export default function GCCBlogPage() {
                     </div>
                     <form onSubmit={handleDetailsSubmit} className="space-y-3">
                       <div className="grid-2" style={{ marginBottom: "10px" }}>
-                        <div className="field" style={{ marginBottom: "0" }}><input type="text" className="form-input" required placeholder="Your Name" value={name} onChange={(e) => setName(e.target.value)} /></div>
-                        <div className="field" style={{ marginBottom: "0" }}><input type="text" className="form-input" required placeholder="Company Name" value={companyName} onChange={(e) => setCompanyName(e.target.value)} /></div>
+                        <div className="field" style={{ marginBottom: "0" }}><label htmlFor="modal-name" className="sr-only">Your Name</label><input id="modal-name" type="text" className="form-input" required placeholder="Your Name" value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" /></div>
+                        <div className="field" style={{ marginBottom: "0" }}><label htmlFor="modal-company" className="sr-only">Company Name</label><input id="modal-company" type="text" className="form-input" required placeholder="Company Name" value={companyName} onChange={(e) => setCompanyName(e.target.value)} autoComplete="organization" /></div>
                       </div>
-                      <div className="field" style={{ marginBottom: "10px" }}><input type="email" className="form-input" required placeholder="Work Email" value={email} onChange={(e) => setEmail(e.target.value)} /></div>
+                      <div className="field" style={{ marginBottom: "10px" }}><label htmlFor="modal-email" className="sr-only">Work Email</label><input id="modal-email" type="email" className="form-input" required placeholder="Work Email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" /></div>
                       <div className="field">
-                        <select className="form-input" required style={{ appearance: "none", background: "#fff", color: "var(--text-2)" }} value={teamSize} onChange={(e) => setTeamSize(e.target.value)}>
+                        <label htmlFor="modal-teamsize" className="sr-only">Team Size</label>
+                        <select id="modal-teamsize" className="form-input" required style={{ appearance: "none", background: "#fff", color: "var(--text-2)" }} value={teamSize} onChange={(e) => setTeamSize(e.target.value)}>
                           <option value="" disabled>Team Size</option>
                           <option value="50-100">50–100 seats</option>
                           <option value="100-250">100–250 seats</option>
@@ -1102,13 +1103,13 @@ export default function GCCBlogPage() {
       <header className="hero">
         <div className="wrap">
           {/*  breadcrumb inside hero area, light  */}
-          <div style={{ "display": "flex", "alignItems": "center", "gap": "6px", "marginBottom": "28px", "fontSize": "12px", "color": "rgba(255,255,255,.35)" }}>
+          <nav aria-label="Breadcrumb" style={{ "display": "flex", "alignItems": "center", "gap": "6px", "marginBottom": "28px", "fontSize": "12px", "color": "rgba(255,255,255,.35)" }}>
             <a href="/" style={{ "color": "rgba(255,255,255,.45)", "transition": "color .2s" }}>Home</a>
-            <svg width="12" height="12" fill="none" stroke="rgba(255,255,255,.3)" strokeWidth="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6" /></svg>
+            <svg width="12" height="12" fill="none" stroke="rgba(255,255,255,.3)" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6" /></svg>
             <a href="/blogs/" style={{ "color": "rgba(255,255,255,.45)", "transition": "color .2s" }}>Blog</a>
-            <svg width="12" height="12" fill="none" stroke="rgba(255,255,255,.3)" strokeWidth="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6" /></svg>
-            <span style={{ "color": "rgba(255,255,255,.55)" }}>GCC Hyderabad</span>
-          </div>
+            <svg width="12" height="12" fill="none" stroke="rgba(255,255,255,.3)" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6" /></svg>
+            <span aria-current="page" style={{ "color": "rgba(255,255,255,.55)" }}>GCC Hyderabad</span>
+          </nav>
 
           <div className="hero-grid">
             {/*  Left: headline + stats  */}
@@ -1143,7 +1144,7 @@ export default function GCCBlogPage() {
                   <span className="urgency-badge">Limited: Free Consultation This Week</span>
 
                   {/*  Progress  */}
-                  <div className="prog-wrap"><div className="prog-bar" style={{ width: formStep === 'phone' ? '50%' : '100%' }}></div></div>
+                  <div className="prog-wrap" role="progressbar" aria-valuenow={formStep === 'phone' ? 50 : 100} aria-valuemin={0} aria-valuemax={100} aria-label="Form progress"><div className="prog-bar" style={{ width: formStep === 'phone' ? '50%' : '100%' }}></div></div>
 
                   {/*  Step 1  */}
                   {formStep === 'phone' && (
@@ -1152,10 +1153,10 @@ export default function GCCBlogPage() {
                       <p className="hfc-sub">100+ verified spaces · Zero brokerage · 100–2000 seats</p>
                       <form onSubmit={handlePhoneSubmit}>
                         <div className="field">
-                          <label>Your Phone Number</label>
+                          <label htmlFor="hero-phone">Your Phone Number</label>
                           <div className="phone-row">
-                            <span className="phone-prefix">🇮🇳 +91</span>
-                            <input type="tel" className="phone-input" placeholder="Enter 10-digit number" maxLength={10} required value={phone} onChange={(e) => setPhone(e.target.value)} />
+                            <span className="phone-prefix" aria-hidden="true">🇮🇳 +91</span>
+                            <input id="hero-phone" type="tel" className="phone-input" placeholder="Enter 10-digit number" maxLength={10} required value={phone} onChange={(e) => setPhone(e.target.value)} autoComplete="tel" />
                           </div>
                         </div>
                         <button type="submit" className="submit-btn" disabled={phone.length < 10 || isSubmittingPhone}>
@@ -1175,7 +1176,7 @@ export default function GCCBlogPage() {
                   {formStep === 'details' && (
                     <div className="step active">
                       <div style={{ "display": "flex", "alignItems": "center", "gap": "8px", "marginBottom": "14px" }}>
-                        <button type="button" onClick={() => setFormStep('phone')} style={{ "background": "#f1f5f9", "border": "none", "borderRadius": "50%", "width": "28px", "height": "28px", "display": "flex", "alignItems": "center", "justifyContent": "center", "flexShrink": "0", "cursor": "pointer" }}><svg width="13" height="13" fill="none" stroke="#475569" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6" /></svg></button>
+                        <button type="button" aria-label="Go back to phone number step" onClick={() => setFormStep('phone')} style={{ "background": "#f1f5f9", "border": "none", "borderRadius": "50%", "width": "28px", "height": "28px", "display": "flex", "alignItems": "center", "justifyContent": "center", "flexShrink": "0", "cursor": "pointer" }}><svg width="13" height="13" fill="none" stroke="#475569" strokeWidth="2.5" viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6" /></svg></button>
                         <div>
                           <div className="hfc-title" style={{ "fontSize": "16px" }}>Almost There!</div>
                           <p className="hfc-sub" style={{ "margin": "0" }}>Share a few details to match the best spaces</p>
@@ -1183,12 +1184,13 @@ export default function GCCBlogPage() {
                       </div>
                       <form onSubmit={handleDetailsSubmit} className="space-y-3">
                         <div className="grid-2" style={{ "marginBottom": "10px" }}>
-                          <div className="field" style={{ "marginBottom": "0" }}><input type="text" className="form-input" required placeholder="Your Name" value={name} onChange={(e) => setName(e.target.value)} /></div>
-                          <div className="field" style={{ "marginBottom": "0" }}><input type="text" className="form-input" required placeholder="Company Name" value={companyName} onChange={(e) => setCompanyName(e.target.value)} /></div>
+                          <div className="field" style={{ "marginBottom": "0" }}><label htmlFor="hero-name" className="sr-only">Your Name</label><input id="hero-name" type="text" className="form-input" required placeholder="Your Name" value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" /></div>
+                          <div className="field" style={{ "marginBottom": "0" }}><label htmlFor="hero-company" className="sr-only">Company Name</label><input id="hero-company" type="text" className="form-input" required placeholder="Company Name" value={companyName} onChange={(e) => setCompanyName(e.target.value)} autoComplete="organization" /></div>
                         </div>
-                        <div className="field" style={{ marginBottom: "10px" }}><input type="email" className="form-input" required placeholder="Work Email" value={email} onChange={(e) => setEmail(e.target.value)} /></div>
+                        <div className="field" style={{ marginBottom: "10px" }}><label htmlFor="hero-email" className="sr-only">Work Email</label><input id="hero-email" type="email" className="form-input" required placeholder="Work Email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" /></div>
                         <div className="field">
-                          <select className="form-input" required style={{ "appearance": "none", "background": "#fff", "color": "var(--text-2)" }} value={teamSize} onChange={(e) => setTeamSize(e.target.value)}>
+                          <label htmlFor="hero-teamsize" className="sr-only">Team Size</label>
+                        <select id="hero-teamsize" className="form-input" required style={{ "appearance": "none", "background": "#fff", "color": "var(--text-2)" }} value={teamSize} onChange={(e) => setTeamSize(e.target.value)}>
                             <option value="" disabled>Team Size</option>
                             <option value="50-100">50–100 seats</option>
                             <option value="100-250">100–250 seats</option>
@@ -1569,7 +1571,7 @@ export default function GCCBlogPage() {
                     { q: "How quickly can I get curated office options?", a: "PrimeDesk shares curated enterprise office options within 24–48 hours of understanding your requirements." }
                   ].map((faq, idx) => (
                     <div key={idx} className={`faq-item ${activeFaq === idx ? 'open' : ''}`}>
-                      <button className="faq-btn" onClick={() => setActiveFaq(activeFaq === idx ? null : idx as any)}>
+                      <button className="faq-btn" aria-expanded={activeFaq === idx} onClick={() => setActiveFaq(activeFaq === idx ? null : idx as any)}>
                         <span className="faq-q">{faq.q}</span>
                         <div className="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9" /></svg></div>
                       </button>
