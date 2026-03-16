@@ -995,9 +995,9 @@ export default function GCCBlogPage() {
               <p className="hero-lead">Enterprise-grade managed offices in Hitech City, Financial District &amp; Gachibowli. Move-in ready spaces for teams of 100–2000. Zero brokerage, delivered in 24 hours.</p>
 
               <div className="hero-stats">
-                <div className="stat-item"><div className="val">100+</div><div className="lbl">GCCs in Hyderabad</div></div>
-                <div className="stat-item"><div className="val">2000</div><div className="lbl">Max seat capacity</div></div>
-                <div className="stat-item"><div className="val">24h</div><div className="lbl">Options delivered</div></div>
+                <div className="stat-item"><div className="val">5+</div><div className="lbl">Years of Experience</div></div>
+                <div className="stat-item"><div className="val">4+</div><div className="lbl">Premium Locations</div></div>
+                <div className="stat-item"><div className="val">50+</div><div className="lbl">Clients Served</div></div>
                 <div className="stat-item"><div className="val">₹0</div><div className="lbl">Brokerage</div></div>
               </div>
 
