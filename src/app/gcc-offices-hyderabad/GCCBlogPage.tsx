@@ -771,6 +771,8 @@ export default function GCCBlogPage() {
   const [companyName, setCompanyName] = useState('');
   const [email, setEmail] = useState('');
   const [teamSize, setTeamSize] = useState('');
+  const [leadId, setLeadId] = useState(null);
+  const [isSubmittingPhone, setIsSubmittingPhone] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeFaq, setActiveFaq] = useState(null);
@@ -818,28 +820,71 @@ export default function GCCBlogPage() {
     };
   }, []);
 
-  const handlePhoneSubmit = (e) => {
+  const handlePhoneSubmit = async (e) => {
     e.preventDefault();
-    if (phone.length >= 10) setFormStep('details');
+    if (phone.length < 10) return;
+    
+    setIsSubmittingPhone(true);
+    try {
+      const response = await fetch('http://localhost:5000/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone, source: 'GCC Hyderabad Page' }),
+      });
+      
+      const data = await response.json();
+      if (response.ok && data.success) {
+        setLeadId(data.leadId);
+        setFormStep('details');
+      } else {
+        alert('Failed to capture details: ' + (data.message || 'Unknown error'));
+      }
+    } catch (err) {
+      console.error('Error submitting phone:', err);
+      // Fallback: let them proceed anyway if backend is down locally, or show error
+      setFormStep('details');
+    } finally {
+      setIsSubmittingPhone(false);
+    }
   };
 
   const handleDetailsSubmit = async (e) => {
     e.preventDefault();
+    if (!leadId) {
+      // If for some reason we missed the initial capture, create a new one
+      return submitNewLead();
+    }
+
+    setIsSubmitting(true);
+    try {
+      const response = await fetch(`http://localhost:5000/api/leads/${leadId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, companyName, teamSize }),
+      });
+      
+      if (response.ok) {
+        setFormStep('success');
+      } else {
+        const data = await response.json();
+        alert('Failed to submit form: ' + (data.message || 'Unknown error'));
+      }
+    } catch (err) {
+      console.error('Error updating form:', err);
+      alert('An error occurred submitting the form. Ensure backend is running.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Fallback if leadId was not captured
+  const submitNewLead = async () => {
     setIsSubmitting(true);
     try {
       const response = await fetch('http://localhost:5000/api/leads', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          phone,
-          companyName,
-          teamSize,
-          source: 'GCC Hyderabad Page',
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, phone, companyName, teamSize, source: 'GCC Hyderabad Page' }),
       });
       
       if (response.ok) {
@@ -922,9 +967,9 @@ export default function GCCBlogPage() {
                           <input type="tel" className="phone-input" placeholder="Enter 10-digit number" maxLength={10} required value={phone} onChange={(e) => setPhone(e.target.value)} />
                         </div>
                       </div>
-                      <button type="submit" className="submit-btn" disabled={phone.length < 10}>
-                        Continue
-                        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+                      <button type="submit" className="submit-btn" disabled={phone.length < 10 || isSubmittingPhone}>
+                        {isSubmittingPhone ? 'Continuing...' : 'Continue'}
+                        {!isSubmittingPhone && <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>}
                       </button>
                     </form>
                   </div>
@@ -1049,9 +1094,9 @@ export default function GCCBlogPage() {
                             <input type="tel" className="phone-input" placeholder="Enter 10-digit number" maxLength={10} required value={phone} onChange={(e) => setPhone(e.target.value)} />
                           </div>
                         </div>
-                        <button type="submit" className="submit-btn" disabled={phone.length < 10}>
-                          Get Free Office Options
-                          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+                        <button type="submit" className="submit-btn" disabled={phone.length < 10 || isSubmittingPhone}>
+                          {isSubmittingPhone ? 'Sending...' : 'Get Free Office Options'}
+                          {!isSubmittingPhone && <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>}
                         </button>
                       </form>
                       <div className="form-trust">

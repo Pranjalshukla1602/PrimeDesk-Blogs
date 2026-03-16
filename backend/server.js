@@ -17,8 +17,8 @@ app.post('/api/leads', async (req, res) => {
   try {
     const { name, email, phone, companyName, teamSize, source } = req.body;
     
-    if (!name || !phone) {
-      return res.status(400).json({ success: false, message: 'Name and Phone are required.' });
+    if (!phone) {
+      return res.status(400).json({ success: false, message: 'Phone is required.' });
     }
 
     const newLead = new Lead({ name, email, phone, companyName, teamSize, source });
@@ -27,6 +27,28 @@ app.post('/api/leads', async (req, res) => {
     res.status(201).json({ success: true, message: 'Lead saved successfully.', leadId: savedLead._id });
   } catch (err) {
     console.error('Lead Save Error:', err);
+    res.status(500).json({ success: false, message: 'Internal server error.' });
+  }
+});
+
+app.put('/api/leads/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, email, companyName, teamSize } = req.body;
+    
+    const updatedLead = await Lead.findByIdAndUpdate(
+      id,
+      { name, email, companyName, teamSize },
+      { new: true }
+    );
+    
+    if (!updatedLead) {
+      return res.status(404).json({ success: false, message: 'Lead not found.' });
+    }
+    
+    res.status(200).json({ success: true, message: 'Lead updated successfully.', lead: updatedLead });
+  } catch (err) {
+    console.error('Lead Update Error:', err);
     res.status(500).json({ success: false, message: 'Internal server error.' });
   }
 });
