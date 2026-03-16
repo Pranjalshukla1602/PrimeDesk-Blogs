@@ -24,6 +24,9 @@ export default function Header() {
     setActiveDropdown(null);
   }, [pathname]);
 
+  // This page has its own navbar
+  if (pathname?.startsWith('/gcc-offices-hyderabad')) return null;
+
   return (
     <header className={`${styles.header} ${isScrolled ? styles.scrolled : ''}`}>
       <div className={`container ${styles.inner}`}>

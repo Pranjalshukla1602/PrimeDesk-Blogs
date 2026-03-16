@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 /* ─── CSS Custom Properties / Design Tokens ─── */
 :root {
   --primary: #000b21;
@@ -306,3 +308,8 @@ p {
 }
 
 
+
+/* Smooth scrolling with offset for sticky nav */
+[id] {
+  scroll-margin-top: 72px;
+}

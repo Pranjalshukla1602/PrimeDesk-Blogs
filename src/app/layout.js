@@ -1,77 +1,31 @@
-import { Inter } from 'next/font/google';
-import './globals.css';
-import Header from '@/components/Header';
-import ClientExtras from '@/components/ClientExtras';
-import { COMPANY } from '@/lib/data';
+import { Playfair_Display, Manrope } from "next/font/google";
+import "./globals.css";
 
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["700", "800", "900"],
+  variable: "--font-playfair",
+  display: "swap",
+});
 
-const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-inter',
+const manrope = Manrope({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-manrope",
+  display: "swap",
 });
 
 export const metadata = {
-  metadataBase: new URL(COMPANY.url),
-  title: {
-    default: 'Managed Office & Coworking Spaces in Hyderabad - PrimeDesk',
-    template: '%s | PrimeDesk',
-  },
-  description: COMPANY.description,
-  keywords: ['coworking spaces', 'managed offices', 'plug and play offices', 'office space hyderabad', 'shared workspace', 'PrimeDesk'],
-  openGraph: {
-    type: 'website',
-    locale: 'en_IN',
-    url: COMPANY.url,
-    siteName: COMPANY.name,
-    title: 'PrimeDesk - Premium Managed Office & Coworking Spaces',
-    description: COMPANY.description,
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'PrimeDesk - Premium Managed Office & Coworking Spaces',
-    description: COMPANY.description,
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  title: "Hyderabad: The Rising Hub for Global Capability Centres | PrimeDesk",
+  description:
+    "Enterprise-grade managed offices for GCCs in Hyderabad. Hitech City, Financial District & Gachibowli. 100–2000 seats. Zero brokerage. Options in 24hrs.",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={inter.variable}>
-      <head>
-        <link rel="icon" href="/favicon.ico" />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'LocalBusiness',
-              name: COMPANY.name,
-              description: COMPANY.description,
-              url: COMPANY.url,
-              telephone: COMPANY.phone[0],
-              email: COMPANY.email,
-              address: {
-                '@type': 'PostalAddress',
-                streetAddress: 'First floor T Hub Phase 2 20, Inorbit Mall Rd, Vittal Rao Nagar, Madhapur',
-                addressLocality: 'Hyderabad',
-                addressRegion: 'Telangana',
-                postalCode: '500081',
-                addressCountry: 'IN',
-              },
-              openingHours: 'Mo-Sa 09:00-19:00',
-              sameAs: Object.values(COMPANY.social),
-            }),
-          }}
-        />
-      </head>
-      <body suppressHydrationWarning style={{ fontFamily: 'var(--font-inter), system-ui, sans-serif' }}>
-        <Header />
-        <main>{children}</main>
-        <ClientExtras />
+    <html lang="en" className="scroll-smooth">
+      <body className={`${playfair.variable} ${manrope.variable} font-sans bg-[#f7f9fc] antialiased`}>
+        {children}
       </body>
     </html>
   );
