@@ -989,7 +989,7 @@ export default function GCCBlogPage() {
       <Header />
 
       {/*  ══════ STICKY BAR ══════  */}
-      <div id="sticky">
+      <div id="sticky" role="banner" aria-label="Sticky navigation bar">
         <div className="sticky-inner">
           <div className="sticky-logo" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Image src="https://primedesk.co.in/images/logo.png" alt="PrimeDesk Logo" width={96} height={24} style={{ height: '24px', width: 'auto' }} />
@@ -999,7 +999,7 @@ export default function GCCBlogPage() {
             <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>
             Zero Brokerage · 24hr Turnaround
           </div>
-          <button className="sticky-btn" onClick={openModal}>
+          <button className="sticky-btn" onClick={openModal} aria-label="Open consultation form">
             Get Office Options
             <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
           </button>
@@ -1007,10 +1007,10 @@ export default function GCCBlogPage() {
       </div>
 
       {/*  ══════ MODAL ══════  */}
-      <div className={`modal-overlay ${modalOpen ? 'open' : ''}`} id="modal">
+      <div className={`modal-overlay ${modalOpen ? 'open' : ''}`} id="modal" role="dialog" aria-modal="true" aria-label="Lead capture form">
         <div className="modal-box">
           <div className="modal-top"></div>
-          <button className="modal-close" onClick={closeModal}><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg></button>
+          <button className="modal-close" onClick={closeModal} aria-label="Close dialog"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg></button>
           <div className="modal-body">
             {formStep !== 'success' ? (
               <div id="m-form-wrap">
