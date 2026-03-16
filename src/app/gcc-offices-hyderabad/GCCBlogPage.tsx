@@ -763,7 +763,7 @@ import './primedesk.css';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import AuthorCard from '@/components/AuthorCard';
-import emailjs from '@emailjs/browser';
+import Image from 'next/image';
 
 export default function GCCBlogPage() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -780,10 +780,14 @@ export default function GCCBlogPage() {
   const [activeFaq, setActiveFaq] = useState(null);
   const [activeSection, setActiveSection] = useState(null);
   const abandonTimer = useRef(null);
+  const emailjsRef = useRef(null);
 
-  // Initialize EmailJS with Public Key
+  // Initialize EmailJS lazily
   useEffect(() => {
-    emailjs.init(process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!);
+    import('@emailjs/browser').then((mod) => {
+      emailjsRef.current = mod.default;
+      emailjsRef.current.init(process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!);
+    });
   }, []);
 
   useEffect(() => {
@@ -847,7 +851,7 @@ export default function GCCBlogPage() {
         
         // Start 1-minute abandonment timer
         abandonTimer.current = setTimeout(() => {
-          emailjs.send(
+          emailjsRef.current?.send(
             process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
             process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_ABANDON!,
             {
@@ -897,7 +901,7 @@ export default function GCCBlogPage() {
         }
         
         // Send Full Lead Email
-        emailjs.send(
+        emailjsRef.current?.send(
           process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
           process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_COMPLETE!,
           {
@@ -936,7 +940,7 @@ export default function GCCBlogPage() {
         setFormStep('success');
         
         // Send Full Lead Email
-        emailjs.send(
+        emailjsRef.current?.send(
           process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
           process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_COMPLETE!,
           {
@@ -988,7 +992,7 @@ export default function GCCBlogPage() {
       <div id="sticky">
         <div className="sticky-inner">
           <div className="sticky-logo" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <img src="https://primedesk.co.in/images/logo.png" alt="PrimeDesk Logo" style={{ height: '24px', width: 'auto' }} />
+            <Image src="https://primedesk.co.in/images/logo.png" alt="PrimeDesk Logo" width={96} height={24} style={{ height: '24px', width: 'auto' }} />
             <span>PrimeDesk · GCC Office Solutions</span>
           </div>
           <div className="sticky-meta">
@@ -1230,7 +1234,7 @@ export default function GCCBlogPage() {
 
           {/*  Full-width hero image  */}
           <div className="hero-img-strip" style={{ "marginTop": "40px" }}>
-            <img src="/images/hero_nanobanana.jpg" alt="GCC office in Hyderabad Hitech City" />
+            <Image src="/images/hero_nanobanana.jpg" alt="GCC office in Hyderabad Hitech City" width={1200} height={600} priority sizes="100vw" style={{ width: '100%', height: 'auto' }} />
             <div className="hero-img-fallback" style={{ "display": "none" }}><span>GCC Offices — Hitech City, Hyderabad</span></div>
             <div className="img-badges">
               <div className="img-badge">
@@ -1334,7 +1338,7 @@ export default function GCCBlogPage() {
                 <h3>World-Class Office Infrastructure</h3>
                 <p>Hyderabad has one of the most advanced commercial real estate markets in India. Hitech City, Gachibowli, and the Financial District are examples of large business areas that have modern Grade-A office buildings that are made to help businesses run smoothly.</p>
                 <div className="office-img-block">
-                  <img src="/images/office_location.jpg" alt="PrimeDesk managed office space Hyderabad GCC" />
+                  <Image src="/images/office_location.jpg" alt="PrimeDesk managed office space Hyderabad GCC" width={800} height={450} loading="lazy" sizes="(max-width: 768px) 100vw, 800px" style={{ width: '100%', height: 'auto' }} />
                   <div className="caption">PrimeDesk Managed Offices · GCC Hubs · Hyderabad</div>
                 </div>
                 <p>These business centers offer:</p>

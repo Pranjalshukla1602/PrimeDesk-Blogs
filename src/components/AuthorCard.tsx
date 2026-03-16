@@ -1,5 +1,6 @@
 'use client';
 import './AuthorCard.css';
+import Image from 'next/image';
 
 export default function AuthorCard({
   name = 'Vibhuti Jain',
@@ -36,7 +37,7 @@ export default function AuthorCard({
           <div className="author-content">
             <div className="author-avatar-wrap">
               {avatarUrl ? (
-                <img src={avatarUrl} alt={name} className="author-avatar-img" />
+                <Image src={avatarUrl} alt={name} className="author-avatar-img" width={88} height={88} loading="lazy" />
               ) : (
                 <div className="author-avatar-fallback">
                   <span>{initials}</span>
