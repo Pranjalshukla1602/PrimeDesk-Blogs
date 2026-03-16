@@ -762,6 +762,7 @@ import { useState, useEffect, useRef } from 'react';
 import './primedesk.css';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
+import emailjs from '@emailjs/browser';
 
 export default function GCCBlogPage() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -777,6 +778,12 @@ export default function GCCBlogPage() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeFaq, setActiveFaq] = useState(null);
   const [activeSection, setActiveSection] = useState(null);
+  const abandonTimer = useRef(null);
+
+  // Initialize EmailJS with Public Key
+  useEffect(() => {
+    emailjs.init(process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -836,6 +843,23 @@ export default function GCCBlogPage() {
       if (response.ok && data.success) {
         setLeadId(data.leadId);
         setFormStep('details');
+        
+        // Start 1-minute abandonment timer
+        abandonTimer.current = setTimeout(() => {
+          emailjs.send(
+            process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+            process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_ABANDON!,
+            {
+              type: 'Abandoned Lead (Step 1 Only)',
+              phone: phone,
+              name: 'Not provided',
+              email: 'Not provided',
+              company: 'Not provided',
+              team_size: 'Not provided',
+              source: 'GCC Hyderabad Page'
+            }
+          ).then(() => console.log('Abandoned lead email sent!')).catch((e) => console.error('EmailJS Error:', e?.text || JSON.stringify(e)));
+        }, 60000);
       } else {
         alert('Failed to capture details: ' + (data.message || 'Unknown error'));
       }
@@ -865,6 +889,26 @@ export default function GCCBlogPage() {
       
       if (response.ok) {
         setFormStep('success');
+        
+        // Clear abandonment timer
+        if (abandonTimer.current) {
+          clearTimeout(abandonTimer.current);
+        }
+        
+        // Send Full Lead Email
+        emailjs.send(
+          process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+          process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_COMPLETE!,
+          {
+            type: 'Complete Lead',
+            phone: phone,
+            name: name,
+            email: email,
+            company: companyName,
+            team_size: teamSize,
+            source: 'GCC Hyderabad Page'
+          }
+        ).then(() => console.log('Complete lead email sent!')).catch((e) => console.error('EmailJS Error:', e?.text || JSON.stringify(e)));
       } else {
         const data = await response.json();
         alert('Failed to submit form: ' + (data.message || 'Unknown error'));
@@ -889,6 +933,21 @@ export default function GCCBlogPage() {
       
       if (response.ok) {
         setFormStep('success');
+        
+        // Send Full Lead Email
+        emailjs.send(
+          process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+          process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_COMPLETE!,
+          {
+            type: 'Complete Lead',
+            phone: phone,
+            name: name,
+            email: email,
+            company: companyName,
+            team_size: teamSize,
+            source: 'GCC Hyderabad Page'
+          }
+        ).then(() => console.log('Complete lead email sent!')).catch((e) => console.error('EmailJS Error:', e?.text || JSON.stringify(e)));
       } else {
         const data = await response.json();
         alert('Failed to submit form: ' + (data.message || 'Unknown error'));
