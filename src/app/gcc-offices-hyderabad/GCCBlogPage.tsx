@@ -1282,7 +1282,7 @@ export default function GCCBlogPage() {
             </aside>
 
             {/*  ARTICLE BODY  */}
-            <article className="article">
+            <main className="article">
 
               {/* ── INTRO PARAGRAPHS (from PDF opening, before first H2) ── */}
               {/* NOTE: These 3 paragraphs appear in the PDF before the first section heading.
@@ -1392,7 +1392,7 @@ export default function GCCBlogPage() {
               <div className="callout reveal">
                 <div className="callout-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" /></svg></div>
                 <div>
-                  <h4>Presence of Global Technology &amp; Enterprise Companies</h4>
+                  <h3>Presence of Global Technology &amp; Enterprise Companies</h3>
                   <p>Many international organizations from different industries already have Global Capability Centers in Hyderabad. This strong ecosystem has network effects that make the city even more appealing to new businesses. Companies choose Hyderabad not only because it is cost-effective, but also because it has a well-developed business environment that can handle large operations.</p>
                   <p>Hyderabad has become one of India's most dynamic business centers thanks to the presence of global technology companies, banks, and consulting firms.</p>
                 </div>
@@ -1405,21 +1405,21 @@ export default function GCCBlogPage() {
                 <div className="district-grid">
                   <div className="d-card reveal reveal-delay-1">
                     <div className="d-icon"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18" /><polyline points="17 6 23 6 23 12" /></svg></div>
-                    <h4>Hitech City</h4>
+                    <h3>Hitech City</h3>
                     <p>Many people agree that Hitech City is the center of Hyderabad's tech industry. It is home to many multinational technology companies and has high-end office spaces for rent that are perfect for big corporate teams.</p>
                     <p>This place is perfect for businesses that want to set up centers for technology and innovation.</p>
                     <a href="#" className="d-link" onClick={openModal}>Explore offices <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></a>
                   </div>
                   <div className="d-card reveal reveal-delay-2">
                     <div className="d-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /></svg></div>
-                    <h4>Financial District</h4>
+                    <h3>Financial District</h3>
                     <p>The Financial District has quickly become a popular place for big companies to set up offices. It has modern infrastructure that supports large-scale business operations and high-quality commercial buildings.</p>
                     <p>A lot of big banks, consulting firms, and tech companies from around the world have set up shop in this area.</p>
                     <a href="#" className="d-link" onClick={openModal}>Explore offices <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></a>
                   </div>
                   <div className="d-card reveal reveal-delay-3">
                     <div className="d-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg></div>
-                    <h4>Gachibowli</h4>
+                    <h3>Gachibowli</h3>
                     <p>Gachibowli is another important business center with good transportation links and access to high-quality office space. There are a lot of corporate campuses and business office complexes in the area.</p>
                     <p>It is especially appealing to businesses that want to build big operational centers.</p>
                     <a href="#" className="d-link" onClick={openModal}>Explore offices <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></a>
@@ -1583,7 +1583,7 @@ export default function GCCBlogPage() {
                 </div>
               </section>
 
-            </article>
+            </main>
           </div>
         </div>
       </div>
