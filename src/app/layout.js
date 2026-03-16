@@ -24,7 +24,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${playfair.variable} ${manrope.variable} font-sans bg-[#f7f9fc] antialiased`}>
+      <body suppressHydrationWarning className={`${playfair.variable} ${manrope.variable} font-sans bg-[#f7f9fc] antialiased`}>
         {children}
       </body>
     </html>

@@ -760,6 +760,8 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import './primedesk.css';
+import Footer from '@/components/Footer';
+import Header from '@/components/Header';
 
 export default function GCCBlogPage() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -842,31 +844,13 @@ export default function GCCBlogPage() {
 
 
       {/*  ══════ TOP NAV ══════  */}
-      <div className="topnav">
-        <div className="wrap">
-          <div className="logo">
-            <div className="logo-mark"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg></div>
-            <span className="logo-text">PrimeDesk</span>
-          </div>
-          <div className="nav-links">
-            <a href="/">Home</a>
-            <a href="/managed-office-space/">Managed Offices</a>
-            <a href="/locations/">Locations</a>
-            <a href="/contact-us/">Contact</a>
-            <a href="#" className="nav-cta" onClick={openModal}>Book A Space</a>
-          </div>
-          <a href="tel:+917993726302" className="nav-phone">
-            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.69 19a19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
-            Call Us
-          </a>
-        </div>
-      </div>
+      <Header />
 
       {/*  ══════ STICKY BAR ══════  */}
       <div id="sticky">
         <div className="sticky-inner">
-          <div className="sticky-logo">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none"><rect x="2" y="7" width="20" height="14" rx="2" stroke="#00c9b1" strokeWidth="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" stroke="#00c9b1" strokeWidth="2" /></svg>
+          <div className="sticky-logo" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <img src="https://primedesk.co.in/images/logo.png" alt="PrimeDesk Logo" style={{ height: '24px', width: 'auto' }} />
             <span>PrimeDesk · GCC Office Solutions</span>
           </div>
           <div className="sticky-meta">
@@ -1486,24 +1470,7 @@ export default function GCCBlogPage() {
       </div>
 
       {/*  ══════ FOOTER ══════  */}
-      <footer className="footer">
-        <div className="wrap">
-          <div className="footer-inner">
-            <div className="footer-logo">
-              <div className="footer-logo-mark"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg></div>
-              <span className="footer-logo-text">PRIMEDESK</span>
-              <span style={{ "fontSize": "12px", "color": "rgba(255,255,255,.2)" }}>· Smart Office Space Aggregator, Hyderabad</span>
-            </div>
-            <div className="footer-links">
-              <a href="#">Privacy Policy</a>
-              <a href="#">Terms</a>
-              <a href="/contact-us/">Contact</a>
-              <a href="/locations/">Locations</a>
-            </div>
-          </div>
-        </div>
-      </footer>
-
+      <Footer />
       {/*  ══════ MOBILE BOTTOM CTA ══════  */}
       <div className="mobile-bottom-cta">
         <div className="mbc-trust">

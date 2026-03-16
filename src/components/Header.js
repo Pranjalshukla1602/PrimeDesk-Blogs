@@ -3,9 +3,11 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, ChevronDown, Phone } from 'lucide-react';
-import { NAV_LINKS, COMPANY } from '@/lib/data';
+import { Menu, X, ChevronDown } from 'lucide-react';
+import { NAV_LINKS } from '@/lib/data';
 import styles from './Header.module.css';
+
+const BASE_URL = 'https://primedesk.co.in';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,40 +26,45 @@ export default function Header() {
     setActiveDropdown(null);
   }, [pathname]);
 
-  // This page has its own navbar
-  if (pathname?.startsWith('/gcc-offices-hyderabad')) return null;
+  const customQuickLinks = [
+    { label: 'Home', href: '/' },
+    { label: 'About Us', href: '/about-us/' },
+    { label: 'Our Services', href: '/our-services/', hasChildren: true },
+    { label: 'Locations', href: '/locations/' },
+    { label: 'Gallery', href: '/gallery/' },
+    { label: 'Contact Us', href: '/contact-us/' }
+  ];
 
   return (
     <header className={`${styles.header} ${isScrolled ? styles.scrolled : ''}`}>
       <div className={`container ${styles.inner}`}>
-        <Link href="/" className={styles.logo}>
-          <span className={styles.logoText}>Prime</span>
-          <span className={styles.logoAccent}>Desk</span>
+        <Link href={BASE_URL} className={styles.logo}>
+          <img src="https://primedesk.co.in/wp-content/uploads/2025/05/WhatsApp_Image_2025-05-26_at_3.19.51_PM__2_-removebg-preview-e1748493491575.png" alt="PrimeDesk Logo" className={styles.logoImg} />
         </Link>
 
         <nav className={`${styles.nav} ${isOpen ? styles.navOpen : ''}`}>
-          {NAV_LINKS.map((link) => (
+          {customQuickLinks.map((link) => (
             <div
               key={link.href}
               className={styles.navItem}
-              onMouseEnter={() => link.children && setActiveDropdown(link.href)}
+              onMouseEnter={() => link.hasChildren && setActiveDropdown(link.href)}
               onMouseLeave={() => setActiveDropdown(null)}
             >
-              <Link
-                href={link.href}
-                className={`${styles.navLink} ${pathname === link.href ? styles.active : ''}`}
-                onClick={() => link.children && setActiveDropdown(activeDropdown === link.href ? null : link.href)}
+              <a
+                href={`${BASE_URL}${link.href}`}
+                className={styles.navLink}
+                onClick={() => link.hasChildren && setActiveDropdown(activeDropdown === link.href ? null : link.href)}
               >
                 {link.label}
-                {link.children && <ChevronDown size={14} className={styles.chevron} />}
-              </Link>
+                {link.hasChildren && <ChevronDown size={14} className={styles.chevron} />}
+              </a>
 
-              {link.children && (
+              {link.hasChildren && (
                 <div className={`${styles.dropdown} ${activeDropdown === link.href ? styles.dropdownOpen : ''}`}>
-                  {link.children.map((child) => (
-                    <Link key={child.href} href={child.href} className={styles.dropdownLink}>
+                  {NAV_LINKS.find(n => n.label === 'Our Services')?.children?.map((child) => (
+                    <a key={child.href} href={`${BASE_URL}${child.href}`} className={styles.dropdownLink}>
                       {child.label}
-                    </Link>
+                    </a>
                   ))}
                 </div>
               )}
@@ -66,13 +73,9 @@ export default function Header() {
         </nav>
 
         <div className={styles.actions}>
-          <a href={`tel:${COMPANY.phone[0].replace(/\s/g, '')}`} className={styles.phoneBtn}>
-            <Phone size={16} />
-            <span className={styles.phoneText}>{COMPANY.phone[0]}</span>
+          <a href={`${BASE_URL}/contact-us/`} className={styles.bookBtn}>
+            Book A Space &rarr;
           </a>
-          <Link href="/contact-us/" className="btn btn--primary btn--sm">
-            Book a Space
-          </Link>
           <button
             className={styles.hamburger}
             onClick={() => setIsOpen(!isOpen)}
