@@ -767,6 +767,11 @@ export default function GCCBlogPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [formStep, setFormStep] = useState('phone');
   const [phone, setPhone] = useState('');
+  const [name, setName] = useState('');
+  const [companyName, setCompanyName] = useState('');
+  const [email, setEmail] = useState('');
+  const [teamSize, setTeamSize] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeFaq, setActiveFaq] = useState(null);
   const [activeSection, setActiveSection] = useState(null);
@@ -818,9 +823,37 @@ export default function GCCBlogPage() {
     if (phone.length >= 10) setFormStep('details');
   };
 
-  const handleDetailsSubmit = (e) => {
+  const handleDetailsSubmit = async (e) => {
     e.preventDefault();
-    setFormStep('success');
+    setIsSubmitting(true);
+    try {
+      const response = await fetch('http://localhost:5000/api/leads', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          companyName,
+          teamSize,
+          source: 'GCC Hyderabad Page',
+        }),
+      });
+      
+      if (response.ok) {
+        setFormStep('success');
+      } else {
+        const data = await response.json();
+        alert('Failed to submit form: ' + (data.message || 'Unknown error'));
+      }
+    } catch (err) {
+      console.error('Error submitting form:', err);
+      alert('An error occurred submitting the form. Ensure backend is running.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const openModal = (e) => {
@@ -908,12 +941,12 @@ export default function GCCBlogPage() {
                     </div>
                     <form onSubmit={handleDetailsSubmit} className="space-y-3">
                       <div className="grid-2" style={{ marginBottom: "10px" }}>
-                        <div className="field" style={{ marginBottom: "0" }}><input type="text" className="form-input" required placeholder="Your Name" /></div>
-                        <div className="field" style={{ marginBottom: "0" }}><input type="text" className="form-input" required placeholder="Company Name" /></div>
+                        <div className="field" style={{ marginBottom: "0" }}><input type="text" className="form-input" required placeholder="Your Name" value={name} onChange={(e) => setName(e.target.value)} /></div>
+                        <div className="field" style={{ marginBottom: "0" }}><input type="text" className="form-input" required placeholder="Company Name" value={companyName} onChange={(e) => setCompanyName(e.target.value)} /></div>
                       </div>
-                      <div className="field" style={{ marginBottom: "10px" }}><input type="email" className="form-input" required placeholder="Work Email" /></div>
+                      <div className="field" style={{ marginBottom: "10px" }}><input type="email" className="form-input" required placeholder="Work Email" value={email} onChange={(e) => setEmail(e.target.value)} /></div>
                       <div className="field">
-                        <select className="form-input" required style={{ appearance: "none", background: "#fff", color: "var(--text-2)" }} defaultValue="">
+                        <select className="form-input" required style={{ appearance: "none", background: "#fff", color: "var(--text-2)" }} value={teamSize} onChange={(e) => setTeamSize(e.target.value)}>
                           <option value="" disabled>Team Size</option>
                           <option value="50-100">50–100 seats</option>
                           <option value="100-250">100–250 seats</option>
@@ -923,9 +956,9 @@ export default function GCCBlogPage() {
                           <option value="2000+">2000+ seats</option>
                         </select>
                       </div>
-                      <button type="submit" className="submit-btn" style={{ marginTop: "16px" }}>
-                        Get Curated Office Options
-                        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+                      <button type="submit" className="submit-btn" style={{ marginTop: "16px" }} disabled={isSubmitting}>
+                        {isSubmitting ? 'Sending...' : 'Get Curated Office Options'}
+                        {!isSubmitting && <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>}
                       </button>
                     </form>
                   </div>
@@ -1041,12 +1074,12 @@ export default function GCCBlogPage() {
                       </div>
                       <form onSubmit={handleDetailsSubmit} className="space-y-3">
                         <div className="grid-2" style={{ "marginBottom": "10px" }}>
-                          <div className="field" style={{ "marginBottom": "0" }}><input type="text" className="form-input" required placeholder="Your Name" /></div>
-                          <div className="field" style={{ "marginBottom": "0" }}><input type="text" className="form-input" required placeholder="Company Name" /></div>
+                          <div className="field" style={{ "marginBottom": "0" }}><input type="text" className="form-input" required placeholder="Your Name" value={name} onChange={(e) => setName(e.target.value)} /></div>
+                          <div className="field" style={{ "marginBottom": "0" }}><input type="text" className="form-input" required placeholder="Company Name" value={companyName} onChange={(e) => setCompanyName(e.target.value)} /></div>
                         </div>
-                        <div className="field" style={{ marginBottom: "10px" }}><input type="email" className="form-input" required placeholder="Work Email" /></div>
+                        <div className="field" style={{ marginBottom: "10px" }}><input type="email" className="form-input" required placeholder="Work Email" value={email} onChange={(e) => setEmail(e.target.value)} /></div>
                         <div className="field">
-                          <select className="form-input" required style={{ "appearance": "none", "background": "#fff", "color": "var(--text-2)" }} defaultValue="">
+                          <select className="form-input" required style={{ "appearance": "none", "background": "#fff", "color": "var(--text-2)" }} value={teamSize} onChange={(e) => setTeamSize(e.target.value)}>
                             <option value="" disabled>Team Size</option>
                             <option value="50-100">50–100 seats</option>
                             <option value="100-250">100–250 seats</option>
@@ -1056,9 +1089,9 @@ export default function GCCBlogPage() {
                             <option value="2000+">2000+ seats</option>
                           </select>
                         </div>
-                        <button type="submit" className="submit-btn" style={{ marginTop: "16px" }}>
-                          Get My Curated Office Options
-                          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+                        <button type="submit" className="submit-btn" style={{ marginTop: "16px" }} disabled={isSubmitting}>
+                          {isSubmitting ? 'Sending...' : 'Get My Curated Office Options'}
+                          {!isSubmitting && <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>}
                         </button>
                       </form>
                     </div>
