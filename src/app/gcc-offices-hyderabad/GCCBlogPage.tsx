@@ -1128,12 +1128,7 @@ export default function GCCBlogPage() {
                 <div className="stat-item"><div className="val">₹0</div><div className="lbl">Brokerage</div></div>
               </div>
 
-              <div className="hero-trust">
-                <span className="hero-trust-label">Trusted by</span>
-                <div className="trust-logos">
-                  <span>Keka</span><span>Cloud Angles</span><span>SoftStandard Solutions</span><span>Envista</span>
-                </div>
-              </div>
+              
             </div>
 
             {/*  Right: 2-step lead form  */}
