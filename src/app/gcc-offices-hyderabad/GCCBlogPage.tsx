@@ -832,13 +832,16 @@ export default function GCCBlogPage() {
     };
   }, []);
 
+  const API_BASE =
+    process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000';
+
   const handlePhoneSubmit = async (e) => {
     e.preventDefault();
     if (phone.length < 10) return;
     
     setIsSubmittingPhone(true);
     try {
-      const response = await fetch('http://localhost:5000/api/leads', {
+      const response = await fetch(`${API_BASE}/api/leads`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phone, source: 'GCC Hyderabad Page' }),
@@ -886,7 +889,7 @@ export default function GCCBlogPage() {
 
     setIsSubmitting(true);
     try {
-      const response = await fetch(`http://localhost:5000/api/leads/${leadId}`, {
+      const response = await fetch(`${API_BASE}/api/leads/${leadId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, companyName, teamSize }),
@@ -930,7 +933,7 @@ export default function GCCBlogPage() {
   const submitNewLead = async () => {
     setIsSubmitting(true);
     try {
-      const response = await fetch('http://localhost:5000/api/leads', {
+      const response = await fetch(`${API_BASE}/api/leads`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, phone, companyName, teamSize, source: 'GCC Hyderabad Page' }),

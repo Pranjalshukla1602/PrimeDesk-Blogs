@@ -1,5 +1,7 @@
 import { COMPANY } from '@/lib/data';
 
+export const revalidate = 86400; // regenerate sitemap at most once per day
+
 export default function sitemap() {
   const baseUrl = COMPANY.url;
 
@@ -25,7 +27,7 @@ export default function sitemap() {
 
   return routes.map((route) => ({
     url: `${baseUrl}${route.path}`,
-    lastModified: new Date(),
+    lastModified: new Date().toISOString(),
     changeFrequency: route.changeFrequency,
     priority: route.priority,
   }));
