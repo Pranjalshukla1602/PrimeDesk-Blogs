@@ -832,16 +832,13 @@ export default function GCCBlogPage() {
     };
   }, []);
 
-  const API_BASE =
-    process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000';
-
   const handlePhoneSubmit = async (e) => {
     e.preventDefault();
     if (phone.length < 10) return;
     
     setIsSubmittingPhone(true);
     try {
-      const response = await fetch(`${API_BASE}/api/leads`, {
+      const response = await fetch('http://localhost:5000/api/leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phone, source: 'GCC Hyderabad Page' }),
@@ -889,7 +886,7 @@ export default function GCCBlogPage() {
 
     setIsSubmitting(true);
     try {
-      const response = await fetch(`${API_BASE}/api/leads/${leadId}`, {
+      const response = await fetch(`http://localhost:5000/api/leads/${leadId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, companyName, teamSize }),
@@ -933,7 +930,7 @@ export default function GCCBlogPage() {
   const submitNewLead = async () => {
     setIsSubmitting(true);
     try {
-      const response = await fetch(`${API_BASE}/api/leads`, {
+      const response = await fetch('http://localhost:5000/api/leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, phone, companyName, teamSize, source: 'GCC Hyderabad Page' }),
@@ -1090,11 +1087,11 @@ export default function GCCBlogPage() {
               <div className="nm-action-btns">
                 <a href="tel:+917993726302" className="nm-action-btn nm-btn-blue">
                   <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.69 19a19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
-                  Call Now
+                  Call 
                 </a>
                 <a href="https://wa.me/918978426302?text=Hello,%20I%20would%20like%20to%20inquire%20about%20GCC%20office%20spaces%20in%20Hyderabad." target="_blank" rel="noopener noreferrer" className="nm-action-btn nm-btn-green">
                   <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" /></svg>
-                  WhatsApp Chat
+                  WhatsApp 
                 </a>
               </div>
             </div>
@@ -1131,7 +1128,12 @@ export default function GCCBlogPage() {
                 <div className="stat-item"><div className="val">₹0</div><div className="lbl">Brokerage</div></div>
               </div>
 
-              
+              <div className="hero-trust">
+                <span className="hero-trust-label">Trusted by</span>
+                <div className="trust-logos">
+                  <span>Keka</span><span>Cloud Angles</span><span>SoftStandard Solutions</span><span>Envista</span>
+                </div>
+              </div>
             </div>
 
             {/*  Right: 2-step lead form  */}
@@ -1268,6 +1270,7 @@ export default function GCCBlogPage() {
                   <li><a href="#government">Government Support</a></li>
                   <li><a href="#districts">Business Districts</a></li>
                   <li><a href="#managed-offices">Managed Offices</a></li>
+                  <li><a href="#startup-workspace-journey">Startup Workspace Journey</a></li>
                   <li><a href="#primedesk">How PrimeDesk Helps</a></li>
                   <li><a href="#future">Future of GCCs</a></li>
                   <li><a href="#faq">FAQs</a></li>
@@ -1468,6 +1471,58 @@ export default function GCCBlogPage() {
                   </div>
                 </div>
                 <p style={{ "marginTop": "16px" }}>Instead of spending a lot of money on interior design, infrastructure, and coordinating with vendors, businesses can move into fully furnished office spaces made for business teams.</p>
+              </section>
+
+              {/*  STARTUP WORKSPACE JOURNEY — coworking → managed → dedicated  */}
+              <section id="startup-workspace-journey" className="reveal">
+                <h2>The Real Journey of a Startup Workspace: From 5 Seats to 50+</h2>
+                <p>
+                  In today&apos;s fast-evolving business ecosystem, especially in cities like Hyderabad, startups rarely stay in one office for long. As teams grow, their workspace needs evolve—from flexible coworking spaces to fully customized managed offices. Understanding this journey helps founders make smarter decisions when choosing the right office space.
+                </p>
+
+                <h3 style={{ marginTop: '22px' }}>Stage 1: Starting Small with Coworking Spaces (5–8 Seats)</h3>
+                <p>
+                  Most startups begin their journey in a coworking space. At this stage, the focus is on keeping costs low, maintaining flexibility, and avoiding long-term commitments.
+                </p>
+                <p>
+                  Coworking spaces offer plug-and-play infrastructure, networking opportunities, and zero setup hassle. This makes them ideal for founders who are still validating their ideas or building their initial teams.
+                </p>
+
+                <h3 style={{ marginTop: '22px' }}>Stage 2: Scaling to a Managed Office (15–20 Employees)</h3>
+                <p>
+                  As the startup grows, the need for privacy, structure, and branding becomes essential. Teams require better collaboration areas, meeting rooms, and a professional setup.
+                </p>
+                <p>
+                  Managed office spaces provide dedicated seating, branding options, and a structured work environment. This stage reflects a transition from early-stage hustle to organized growth.
+                </p>
+
+                <h3 style={{ marginTop: '22px' }}>Stage 3: Moving to a Dedicated Workspace (50+ Employees)</h3>
+                <p>
+                  When startups scale beyond 50 employees, workspace expectations shift significantly. Companies now require customized layouts, department-wise seating, and long-term scalability.
+                </p>
+                <p>
+                  Dedicated managed workspaces offer complete control, enhanced productivity, and a strong company culture—helping startups evolve into established organizations.
+                </p>
+
+                <h3 style={{ marginTop: '22px' }}>Real-Life Example: Startup Growth in Hyderabad</h3>
+                <div className="steps-box reveal" style={{ marginTop: '14px' }}>
+                  <p className="steps-label">Year-on-year workspace moves</p>
+                  <div className="step-row">
+                    <div className="step-num">1</div>
+                    <div className="step-text">Year 1: Started with 6 seats in a coworking space in HITEC City.</div>
+                  </div>
+                  <div className="step-row">
+                    <div className="step-num">2</div>
+                    <div className="step-text">Year 2: Expanded to a 20-seater managed office in Madhapur.</div>
+                  </div>
+                  <div className="step-row">
+                    <div className="step-num">3</div>
+                    <div className="step-text">Year 3: Moved to a 60-seater customized workspace in Financial District.</div>
+                  </div>
+                </div>
+                <p style={{ marginTop: '16px' }}>
+                  This growth was driven by hiring expansion, client meeting needs, and brand positioning.
+                </p>
               </section>
 
               {/*  EXPLORE ENTERPRISE CTA SECTION  */}

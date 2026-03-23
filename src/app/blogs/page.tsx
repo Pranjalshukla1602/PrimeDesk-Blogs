@@ -19,8 +19,20 @@ const BLOGS = [
     readTime: '6 min read',
     author: 'Vibhuti Jain',
     tag: 'GCC',
-    href: '/gcc-offices-hyderabad',
+    href: '/blogs/gcc-offices-hyderabad',
     image: '/images/hero_nanobanana.jpg',
+  },
+  {
+    id: 2,
+    title: 'Managed Office vs Coworking Space in Hyderabad',
+    description:
+      'A startup-focused comparison of costs, flexibility, privacy, and scalability to help choose the right office model.',
+    date: 'Mar 23, 2026',
+    readTime: '7 min read',
+    author: 'PrimeDesk Team',
+    tag: 'Workspace Strategy',
+    href: '/blogs/managed-vs-coworking',
+    image: '/images/office1.png',
   },
 ];
 

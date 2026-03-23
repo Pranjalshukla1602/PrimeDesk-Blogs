@@ -2,7 +2,7 @@
 const nextConfig = {
   trailingSlash: true,
   output: 'export',
-  distDir: 'out',
+  assetPrefix: '/blogs',
   experimental: {
     optimizeCss: true,
   },
