@@ -764,6 +764,7 @@ import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import AuthorCard from '@/components/AuthorCard';
 import Image from 'next/image';
+import { getLeadsApiBase } from '@/lib/leadsApi';
 
 export default function GCCBlogPage() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -835,10 +836,18 @@ export default function GCCBlogPage() {
   const handlePhoneSubmit = async (e) => {
     e.preventDefault();
     if (phone.length < 10) return;
-    
+
+    const apiBase = getLeadsApiBase();
+    if (!apiBase) {
+      alert(
+        'Leads API is not configured. Add NEXT_PUBLIC_API_BASE_URL in Vercel (your public HTTPS API URL).'
+      );
+      return;
+    }
+
     setIsSubmittingPhone(true);
     try {
-      const response = await fetch('http://localhost:5000/api/leads', {
+      const response = await fetch(`${apiBase}/api/leads`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phone, source: 'GCC Hyderabad Page' }),
@@ -884,9 +893,17 @@ export default function GCCBlogPage() {
       return submitNewLead();
     }
 
+    const apiBase = getLeadsApiBase();
+    if (!apiBase) {
+      alert(
+        'Leads API is not configured. Add NEXT_PUBLIC_API_BASE_URL in Vercel (your public HTTPS API URL).'
+      );
+      return;
+    }
+
     setIsSubmitting(true);
     try {
-      const response = await fetch(`http://localhost:5000/api/leads/${leadId}`, {
+      const response = await fetch(`${apiBase}/api/leads/${leadId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, companyName, teamSize }),
@@ -928,9 +945,17 @@ export default function GCCBlogPage() {
 
   // Fallback if leadId was not captured
   const submitNewLead = async () => {
+    const apiBase = getLeadsApiBase();
+    if (!apiBase) {
+      alert(
+        'Leads API is not configured. Add NEXT_PUBLIC_API_BASE_URL in Vercel (your public HTTPS API URL).'
+      );
+      return;
+    }
+
     setIsSubmitting(true);
     try {
-      const response = await fetch('http://localhost:5000/api/leads', {
+      const response = await fetch(`${apiBase}/api/leads`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, phone, companyName, teamSize, source: 'GCC Hyderabad Page' }),
