@@ -975,12 +975,32 @@ export default function ManagedOfficeChecklistPage() {
           .checklist-overview-grid { grid-template-columns: 1fr 1fr; }
           .checklist-section { padding: 16px; }
           .checklist-badge { width: 34px; height: 34px; font-size: 11px; }
-          .checklist-section-header h3 { font-size: 16px; }
+          .checklist-section-header h3 { font-size: 16px; padding-top: 4px; }
+          .section-divider h2 { font-size: 20px; }
+          .explore-links { flex-direction: column; gap: 8px; }
+          .explore-link { font-size: 12px; }
+          .why-box { padding: 16px; }
+          .why-item { font-size: 13px; }
+          .why-item span { font-size: 12px; }
+          .comparison-table { font-size: 13px; }
+          .comparison-table th, .comparison-table td { padding: 11px 14px; }
         }
         @media (max-width: 480px) {
           .checklist-overview-grid { grid-template-columns: 1fr; }
+          .checklist-section { padding: 14px; border-radius: 12px; }
+          .checklist-section-header { gap: 10px; }
+          .checklist-badge { width: 30px; height: 30px; font-size: 10px; border-radius: 8px; }
+          .checklist-section-header h3 { font-size: 15px; }
+          .section-divider h2 { font-size: 18px; }
           .comparison-table { font-size: 12px; }
-          .comparison-table th, .comparison-table td { padding: 10px 12px; }
+          .comparison-table th, .comparison-table td { padding: 10px 10px; }
+          .why-box { padding: 14px; border-radius: 10px; }
+          .why-item { font-size: 12px; gap: 8px; }
+          .why-item strong { font-size: 13px; }
+          .why-item span { font-size: 11px; }
+          .explore-links { padding: 10px 12px; gap: 6px; }
+          .explore-label { font-size: 11px; }
+          .explore-link { font-size: 11px; }
         }
       `}</style>
 
