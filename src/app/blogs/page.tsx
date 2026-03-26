@@ -7,6 +7,24 @@ export const metadata: Metadata = {
   title: 'Explore Our Blog | PrimeDesk',
   description:
     'Fresh insights, expert tips, and guides on workspaces, GCC strategy, and office solutions from the PrimeDesk team.',
+  openGraph: {
+    title: 'Explore Our Blog | PrimeDesk',
+    description: 'Fresh insights, expert tips, and guides on workspaces, GCC strategy, and office solutions from the PrimeDesk team.',
+    url: 'https://primedesk.co.in/blogs/',
+    siteName: 'PrimeDesk',
+    images: [{ url: 'https://primedesk.co.in/images/hero_managed_coworking.webp', width: 1200, height: 630 }],
+    locale: 'en_IN',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Explore Our Blog | PrimeDesk',
+    description: 'Fresh insights, expert tips, and guides on workspaces, GCC strategy, and office solutions from the PrimeDesk team.',
+    images: ['https://primedesk.co.in/images/hero_managed_coworking.webp'],
+  },
+  alternates: {
+    canonical: 'https://primedesk.co.in/blogs/',
+  },
 };
 
 const BLOGS = [
@@ -40,6 +58,26 @@ export default function BlogsPage() {
   return (
     <>
       <Header />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Blog",
+            "name": "PrimeDesk Blog",
+            "description": "Insights, expert tips, and guides on workspaces, GCC strategy, and office solutions from the PrimeDesk team.",
+            "url": "https://primedesk.co.in/blogs/",
+            "publisher": {
+              "@type": "Organization",
+              "name": "PrimeDesk",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://primedesk.co.in/images/logo.png"
+              }
+            }
+          })
+        }}
+      />
       <BlogsClient blogs={BLOGS} />
       <Footer />
     </>

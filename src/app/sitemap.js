@@ -23,6 +23,10 @@ export default function sitemap() {
     { path: '/guided-visits-one-to-one-consultation/', priority: 0.7, changeFrequency: 'monthly' },
     { path: '/hassle-free-experience/', priority: 0.7, changeFrequency: 'monthly' },
     { path: '/conventional-office-space/', priority: 0.7, changeFrequency: 'monthly' },
+    { path: '/blogs/', priority: 0.9, changeFrequency: 'weekly' },
+    { path: '/blogs/gcc-offices-hyderabad/', priority: 0.8, changeFrequency: 'monthly' },
+    { path: '/blogs/managed-vs-coworking/', priority: 0.8, changeFrequency: 'monthly' },
+    { path: '/blogs/things-to-check-before-renting-managed-office-space-hyderabad/', priority: 0.8, changeFrequency: 'monthly' },
   ];
 
   return routes.map((route) => ({
