@@ -1473,11 +1473,11 @@ export default function ManagedVsCoworkingPage() {
                     <Image
                         src="/images/hero_managed_coworking.webp"
                         alt="Managed office and coworking space in Hyderabad"
-                        width={1200}
-                        height={600}
+                        width={720}
+                        height={400}
                         priority
                         fetchPriority="high"
-                        sizes="(max-width: 768px) 100vw, 1200px"
+                        sizes="(max-width: 768px) 100vw, 720px"
                         style={{ width: '100%', height: 'auto' }}
                     />
                     <div className="img-badges">

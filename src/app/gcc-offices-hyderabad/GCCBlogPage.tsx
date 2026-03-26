@@ -1017,7 +1017,7 @@ export default function GCCBlogPage() {
       <div id="sticky" role="banner" aria-label="Sticky navigation bar">
         <div className="sticky-inner">
           <div className="sticky-logo" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Image src="https://primedesk.co.in/wp-content/uploads/2025/05/WhatsApp_Image_2025-05-26_at_3.19.51_PM__2_-removebg-preview-e1748493491575.png" alt="PrimeDesk Logo" width={96} height={24} style={{ height: '24px', width: 'auto' }} />
+            <Image src="/images/logo.webp" alt="PrimeDesk Logo" width={96} height={24} style={{ height: '24px', width: 'auto' }} />
             <span>PrimeDesk · GCC Office Solutions</span>
           </div>
           <div className="sticky-meta">
