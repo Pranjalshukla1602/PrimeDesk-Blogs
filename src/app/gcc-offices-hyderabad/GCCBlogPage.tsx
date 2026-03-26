@@ -1261,7 +1261,15 @@ export default function GCCBlogPage() {
 
           {/*  Full-width hero image  */}
           <div className="hero-img-strip" style={{ "marginTop": "40px" }}>
-            <Image src="/images/hero_nanobanana.jpg" alt="GCC office in Hyderabad Hitech City" width={1200} height={600} priority sizes="100vw" style={{ width: '100%', height: 'auto' }} />
+            <img 
+              src="/images/hero_nanobanana.jpg" 
+              srcSet="/images/hero_nanobanana-650w.webp 650w, /images/hero_nanobanana.jpg 1200w" 
+              sizes="(max-width: 768px) 100vw, 1200px" 
+              alt="GCC office in Hyderabad Hitech City" 
+              fetchPriority="high" 
+              decoding="async" 
+              style={{ width: '100%', height: 'auto' }} 
+            />
             <div className="hero-img-fallback" style={{ "display": "none" }}><span>GCC Offices — Hitech City, Hyderabad</span></div>
             <div className="img-badges">
               <div className="img-badge">
@@ -1366,7 +1374,15 @@ export default function GCCBlogPage() {
                 <h3>World-Class Office Infrastructure</h3>
                 <p>Hyderabad has one of the most advanced commercial real estate markets in India. Hitech City, Gachibowli, and the Financial District are examples of large business areas that have modern Grade-A office buildings that are made to help businesses run smoothly.</p>
                 <div className="office-img-block">
-                  <Image src="/images/office_location.jpg" alt="PrimeDesk managed office space Hyderabad GCC" width={800} height={450} loading="lazy" sizes="(max-width: 768px) 100vw, 800px" style={{ width: '100%', height: 'auto' }} />
+                  <img 
+                    src="/images/office_location.jpg" 
+                    srcSet="/images/office_location-650w.webp 650w, /images/office_location.jpg 800w" 
+                    sizes="(max-width: 768px) 100vw, 800px" 
+                    alt="PrimeDesk managed office space Hyderabad GCC" 
+                    loading="lazy" 
+                    decoding="async" 
+                    style={{ width: '100%', height: 'auto' }} 
+                  />
                   <div className="caption">PrimeDesk Managed Offices · GCC Hubs · Hyderabad</div>
                 </div>
                 <p>These business centers offer:</p>
