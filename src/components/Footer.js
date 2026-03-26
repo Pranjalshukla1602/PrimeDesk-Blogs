@@ -1,6 +1,13 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Instagram, Facebook, Linkedin, Youtube, Phone, Mail, MapPin, ChevronRight } from 'lucide-react';
+import Instagram from 'lucide-react/dist/esm/icons/instagram';
+import Facebook from 'lucide-react/dist/esm/icons/facebook';
+import Linkedin from 'lucide-react/dist/esm/icons/linkedin';
+import Youtube from 'lucide-react/dist/esm/icons/youtube';
+import Phone from 'lucide-react/dist/esm/icons/phone';
+import Mail from 'lucide-react/dist/esm/icons/mail';
+import MapPin from 'lucide-react/dist/esm/icons/map-pin';
+import ChevronRight from 'lucide-react/dist/esm/icons/chevron-right';
 import { COMPANY, NAV_LINKS, PRIMARY_SERVICES } from '@/lib/data';
 import styles from './Footer.module.css';
 

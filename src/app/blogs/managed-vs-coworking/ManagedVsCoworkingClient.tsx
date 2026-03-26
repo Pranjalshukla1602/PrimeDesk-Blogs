@@ -6,7 +6,9 @@ import Header from '@/components/Header';
 import AuthorCard from '@/components/AuthorCard';
 import Image from 'next/image';
 import { getLeadsApiBase } from '@/lib/leadsApi';
-import ShareBar from '@/components/ShareBar';
+import dynamic from 'next/dynamic';
+
+const ShareBar = dynamic(() => import('@/components/ShareBar'), { ssr: false });
 export default function ManagedVsCoworkingPage() {
     const [modalOpen, setModalOpen] = useState(false);
     const [formStep, setFormStep] = useState('phone');
