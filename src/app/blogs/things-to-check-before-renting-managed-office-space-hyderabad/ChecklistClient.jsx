@@ -431,7 +431,7 @@ export default function ManagedOfficeChecklistPage() {
 
                     {/* Full-width hero image */}
                     <div className="hero-img-strip" style={{ marginTop: "40px" }}>
-                        <Image src="/images/hero_managed_office_checklist.jpg" alt="Managed office space checklist Hyderabad" width={1200} height={600} priority fetchPriority="high" sizes="(max-width: 480px) 480px, (max-width: 768px) 768px, (max-width: 1024px) 1024px, 1200px" style={{ width: '100%', height: 'auto' }} />
+                        <Image src="/images/hero_managed_office_checklist.webp" alt="Managed office space checklist Hyderabad" width={720} height={400} priority fetchPriority="high" sizes="(max-width: 768px) 100vw, 720px" style={{ width: '100%', height: 'auto' }} />
                         <div className="img-badges">
                             <div className="img-badge">
                                 <svg viewBox="0 0 24 24" style={{ stroke: "var(--teal)" }} aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg>
