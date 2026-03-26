@@ -1,5 +1,9 @@
 import ManagedVsCoworkingPage from './ManagedVsCoworkingClient';
 import { Metadata } from 'next';
+import '@/app/gcc-offices-hyderabad/primedesk.css';
+import '@/components/AuthorCard.css';
+import '@/components/Header.module.css';
+import '@/components/Footer.module.css';
 
 export const metadata: Metadata = {
   title: 'Managed Office vs Coworking Space in Hyderabad – Which Is Better for Startups? | PrimeDesk',

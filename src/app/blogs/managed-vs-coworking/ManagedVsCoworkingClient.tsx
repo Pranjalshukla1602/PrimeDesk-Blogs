@@ -1,6 +1,5 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import '@/app/gcc-offices-hyderabad/primedesk.css';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import AuthorCard from '@/components/AuthorCard';
