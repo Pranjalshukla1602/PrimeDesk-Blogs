@@ -42,18 +42,7 @@ export default function Header() {
     <header className={`${styles.header} ${isScrolled ? styles.scrolled : ''}`}>
       <div className={`container ${styles.inner}`}>
         <Link href={BASE_URL} className={styles.logo}>
-          <img 
-            src="/images/logo.webp" 
-            srcSet="/images/logo-120w.webp 120w, /images/logo-240w.webp 240w" 
-            sizes="(max-width: 768px) 120px, 150px"
-            alt="PrimeDesk Logo" 
-            width="150" 
-            height="40" 
-            className={styles.logoImg} 
-            loading="lazy" 
-            decoding="async" 
-            fetchPriority="high" 
-          />
+          <Image src="/images/logo.webp" alt="PrimeDesk Logo" width={150} height={40} className={styles.logoImg} />
         </Link>
 
         <nav className={`${styles.nav} ${isOpen ? styles.navOpen : ''}`}>
