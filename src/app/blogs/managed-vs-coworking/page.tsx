@@ -1185,7 +1185,7 @@ export default function ManagedVsCoworkingPage() {
                 <div className="sticky-inner">
                     <div className="sticky-logo" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <Image
-                            src="https://primedesk.co.in/wp-content/uploads/2025/05/WhatsApp_Image_2025-05-26_at_3.19.51_PM__2_-removebg-preview-e1748493491575.png"
+                            src="/images/logo.webp"
                             alt="PrimeDesk Logo"
                             width={96}
                             height={24}
@@ -1471,7 +1471,7 @@ export default function ManagedVsCoworkingPage() {
                 {/* Full-width hero image */}
                 <div className="hero-img-strip" style={{ marginTop: "40px" }}>
                     <Image
-                        src="/images/hero_managed_coworking.jpg"
+                        src="/images/hero_managed_coworking.webp"
                         alt="Managed office and coworking space in Hyderabad"
                         width={1200}
                         height={600}
