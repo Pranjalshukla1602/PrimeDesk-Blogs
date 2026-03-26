@@ -7,7 +7,7 @@ export default function AuthorCard({
   role = 'Director',
   company = 'PrimeDesk',
   linkedinUrl = 'https://linkedin.com/in/vibhuti-jain-67b06b20',
-  avatarUrl = '/images/vibhuti-jain.png',
+  avatarUrl = '/images/vibhuti-jain.webp',
 }: {
   name?: string;
   role?: string;
