@@ -5,8 +5,9 @@ import Header from '@/components/Header';
 import AuthorCard from '@/components/AuthorCard';
 import '../../gcc-offices-hyderabad/primedesk.css';
 import Image from 'next/image';
-
-
+import dynamic from 'next/dynamic';
+import LeadCaptureForm from '@/components/LeadCaptureForm';
+import LeadCaptureModal from '@/components/LeadCaptureModal';
 
 import ReactDOM from 'react-dom';
 
@@ -14,108 +15,8 @@ export default function ManagedOfficeChecklistPage() {
     ReactDOM.preconnect('https://primedesk.co.in', { crossOrigin: 'anonymous' });
     
     const [modalOpen, setModalOpen] = useState(false);
-    const [formStep, setFormStep] = useState('phone');
-    const [phone, setPhone] = useState('');
-    const [name, setName] = useState('');
-    const [companyName, setCompanyName] = useState('');
-    const [email, setEmail] = useState('');
-    const [teamSize, setTeamSize] = useState('');
-    const [leadId, setLeadId] = useState(null);
-    const [isSubmittingPhone, setIsSubmittingPhone] = useState(false);
-    const [isSubmitting, setIsSubmitting] = useState(false);
     const [activeSection, setActiveSection] = useState(null);
     const [openFaq, setOpenFaq] = useState(null);
-    const abandonTimer = useRef(null);
-    const emailjsRef = useRef(null);
-
-    useEffect(() => {
-        import('@emailjs/browser').then((mod) => {
-            emailjsRef.current = mod.default;
-            emailjsRef.current.init(process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
-        });
-    }, []);
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => { entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('in'); }); },
-            { rootMargin: '-40px 0px' }
-        );
-        document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
-
-        const sections = document.querySelectorAll('section[id]');
-        const tocObs = new IntersectionObserver(
-            (entries) => { entries.forEach((e) => { if (e.isIntersecting) setActiveSection(e.target.id); }); },
-            { rootMargin: '-25% 0px -65% 0px' }
-        );
-        sections.forEach((s) => tocObs.observe(s));
-        return () => { observer.disconnect(); tocObs.disconnect(); };
-    }, []);
-
-    const handlePhoneSubmit = async (e) => {
-        e.preventDefault();
-        if (phone.length < 10) return;
-        setIsSubmittingPhone(true);
-        try {
-            const res = await fetch('http://localhost:5000/api/leads', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phone, source: '7 Things Checklist Page' }),
-            });
-            const data = await res.json();
-            if (res.ok && data.success) {
-                setLeadId(data.leadId);
-                setFormStep('details');
-                abandonTimer.current = setTimeout(() => {
-                    emailjsRef.current?.send(
-                        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
-                        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_ABANDON,
-                        { type: 'Abandoned Lead', phone, name: 'Not provided', email: 'Not provided', company: 'Not provided', team_size: 'Not provided', source: '7 Things Checklist Page' }
-                    ).catch(console.error);
-                }, 60000);
-            } else { alert('Failed: ' + (data.message || 'Unknown error')); }
-        } catch { setFormStep('details'); }
-        finally { setIsSubmittingPhone(false); }
-    };
-
-    const handleDetailsSubmit = async (e) => {
-        e.preventDefault();
-        if (!leadId) return submitNewLead();
-        setIsSubmitting(true);
-        try {
-            const res = await fetch(`http://localhost:5000/api/leads/${leadId}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email, companyName, teamSize }),
-            });
-            if (res.ok) {
-                setFormStep('success');
-                if (abandonTimer.current) clearTimeout(abandonTimer.current);
-                emailjsRef.current?.send(process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID, process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_COMPLETE,
-                    { type: 'Complete Lead', phone, name, email, company: companyName, team_size: teamSize, source: '7 Things Checklist Page' }
-                ).catch(console.error);
-            } else { const d = await res.json(); alert('Failed: ' + (d.message || 'Unknown error')); }
-        } catch { alert('An error occurred. Ensure backend is running.'); }
-        finally { setIsSubmitting(false); }
-    };
-
-    const submitNewLead = async () => {
-        setIsSubmitting(true);
-        try {
-            const res = await fetch('http://localhost:5000/api/leads', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email, phone, companyName, teamSize, source: '7 Things Checklist Page' }),
-            });
-            if (res.ok) {
-                setFormStep('success');
-                emailjsRef.current?.send(process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID, process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_COMPLETE,
-                    { type: 'Complete Lead', phone, name, email, company: companyName, team_size: teamSize, source: '7 Things Checklist Page' }
-                ).catch(console.error);
-            } else { const d = await res.json(); alert('Failed: ' + (d.message || 'Unknown error')); }
-        } catch { alert('An error occurred. Ensure backend is running.'); }
-        finally { setIsSubmitting(false); }
-    };
-
     const openModal = (e) => { if (e) e.preventDefault(); setModalOpen(true); document.body.style.overflow = 'hidden'; };
     const closeModal = () => { setModalOpen(false); document.body.style.overflow = ''; };
 
@@ -139,98 +40,21 @@ export default function ManagedOfficeChecklistPage() {
         { num: "07", id: "total-cost", title: "Total Cost and Extra Fees", icon: <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg> },
     ];
 
-    const LeadForm = ({ idPrefix }) => (
-        <>
-            <div className="prog-wrap" role="progressbar" aria-valuenow={formStep === 'phone' ? 50 : 100} aria-valuemin={0} aria-valuemax={100} aria-label="Form progress">
-                <div className="prog-bar" style={{ width: formStep === 'phone' ? '50%' : '100%' }}></div>
-            </div>
-            {formStep === 'phone' && (
-                <div className="step active">
-                    <div className="hfc-title">Get Verified Managed Office Options</div>
-                    <p className="hfc-sub">No brokerage · Verified spaces · 24–48 hr delivery</p>
-                    <form onSubmit={handlePhoneSubmit}>
-                        <div className="field">
-                            <label htmlFor={`${idPrefix}-phone`}>Your Phone Number</label>
-                            <div className="phone-row">
-                                <span className="phone-prefix" aria-hidden="true">🇮🇳 +91</span>
-                                <input id={`${idPrefix}-phone`} type="tel" className="phone-input" placeholder="Enter 10-digit number" maxLength={10} required value={phone} onChange={(e) => setPhone(e.target.value)} autoComplete="tel" />
-                            </div>
-                        </div>
-                        <button type="submit" className="submit-btn" disabled={phone.length < 10 || isSubmittingPhone}>
-                            {isSubmittingPhone ? 'Sending...' : 'Get Verified Office Options'}
-                            {!isSubmittingPhone && <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>}
-                        </button>
-                    </form>
-                    <div className="form-trust">
-                        <div className="form-trust-item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>No Brokerage</div>
-                        <div className="form-trust-item"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>24hr Turnaround</div>
-                        <div className="form-trust-item"><svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>Verified Offices</div>
-                    </div>
-                </div>
-            )}
-            {formStep === 'details' && (
-                <div className="step active">
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px" }}>
-                        <button type="button" aria-label="Go back" onClick={() => setFormStep('phone')} style={{ background: "#f1f5f9", border: "none", borderRadius: "50%", width: "28px", height: "28px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
-                            <svg width="13" height="13" fill="none" stroke="#475569" strokeWidth="2.5" viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6" /></svg>
-                        </button>
-                        <div>
-                            <div className="hfc-title" style={{ fontSize: "16px", margin: 0 }}>Almost There!</div>
-                            <p className="hfc-sub" style={{ margin: 0 }}>Share details to match the best spaces</p>
-                        </div>
-                    </div>
-                    <form onSubmit={handleDetailsSubmit}>
-                        <div className="grid-2" style={{ marginBottom: "10px" }}>
-                            <div className="field" style={{ marginBottom: "0" }}>
-                                <label htmlFor={`${idPrefix}-name`} className="sr-only">Your Name</label>
-                                <input id={`${idPrefix}-name`} type="text" className="form-input" required placeholder="Your Name" value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" />
-                            </div>
-                            <div className="field" style={{ marginBottom: "0" }}>
-                                <label htmlFor={`${idPrefix}-company`} className="sr-only">Company Name</label>
-                                <input id={`${idPrefix}-company`} type="text" className="form-input" required placeholder="Company Name" value={companyName} onChange={(e) => setCompanyName(e.target.value)} autoComplete="organization" />
-                            </div>
-                        </div>
-                        <div className="field" style={{ marginBottom: "10px" }}>
-                            <label htmlFor={`${idPrefix}-email`} className="sr-only">Work Email</label>
-                            <input id={`${idPrefix}-email`} type="email" className="form-input" required placeholder="Work Email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
-                        </div>
-                        <div className="field">
-                            <label htmlFor={`${idPrefix}-teamsize`} className="sr-only">Team Size</label>
-                            <select id={`${idPrefix}-teamsize`} className="form-input" required style={{ appearance: "none", background: "#fff", color: "var(--text-2)" }} value={teamSize} onChange={(e) => setTeamSize(e.target.value)}>
-                                <option value="" disabled>Team Size</option>
-                                <option value="1-10">1–10 employees</option>
-                                <option value="10-50">10–50 employees</option>
-                                <option value="50-100">50–100 employees</option>
-                                <option value="100+">100+ employees</option>
-                            </select>
-                        </div>
-                        <button type="submit" className="submit-btn" style={{ marginTop: "16px" }} disabled={isSubmitting}>
-                            {isSubmitting ? 'Sending...' : 'Get My Office Options'}
-                            {!isSubmitting && <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>}
-                        </button>
-                    </form>
-                </div>
-            )}
-            {formStep === 'success' && (
-                <div className="step active">
-                    <div className="success-card">
-                        <div className="success-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg></div>
-                        <h3>We'll Call You Shortly!</h3>
-                        <p>Our advisor will share verified office options within 24 hours.</p>
-                    </div>
-                </div>
-            )}
-            <div className="social-proof">
-                <div className="avatar-stack" aria-hidden="true">
-                    <div className="avatar" style={{ background: "#2563eb" }}>A</div>
-                    <div className="avatar" style={{ background: "#059669" }}>M</div>
-                    <div className="avatar" style={{ background: "#d97706" }}>S</div>
-                    <div className="avatar" style={{ background: "#7c3aed" }}>R</div>
-                </div>
-                <p className="sp-text"><b>200+ businesses</b> found offices through PrimeDesk</p>
-            </div>
-        </>
-    );
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => { entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('in'); }); },
+            { rootMargin: '-40px 0px' }
+        );
+        document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+        const sections = document.querySelectorAll('section[id]');
+        const tocObs = new IntersectionObserver(
+            (entries) => { entries.forEach((e) => { if (e.isIntersecting) setActiveSection(e.target.id); }); },
+            { rootMargin: '-25% 0px -65% 0px' }
+        );
+        sections.forEach((s) => tocObs.observe(s));
+        return () => { observer.disconnect(); tocObs.disconnect(); };
+    }, []);
 
     return (
         <div className="gcc-page">
@@ -279,105 +103,13 @@ export default function ManagedOfficeChecklistPage() {
             </div>
 
             {/* ══════ MODAL ══════ */}
-            <div className={`modal-overlay ${modalOpen ? 'open' : ''}`} id="modal" role="dialog" aria-modal="true" aria-label="Office inquiry form">
-                <div className="modal-box">
-                    <div className="modal-top"></div>
-                    <button className="modal-close" onClick={closeModal} aria-label="Close dialog">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
-                    </button>
-                    <div className="modal-body">
-                        {formStep !== 'success' ? (
-                            <div id="m-form-wrap">
-                                <p className="modal-tag">PrimeDesk · No Brokerage</p>
-                                <h2 className="modal-title">Get Verified Managed Office Options in 24 Hours</h2>
-                                <p className="modal-sub">Confirmed office spaces in top Hyderabad locations. No brokerage fees.</p>
-                                <div className="prog-wrap" role="progressbar" aria-valuenow={formStep === 'phone' ? 50 : 100} aria-valuemin={0} aria-valuemax={100} aria-label="Form progress">
-                                    <div className="prog-bar" style={{ width: formStep === 'phone' ? '50%' : '100%' }}></div>
-                                </div>
-                                {formStep === 'phone' && (
-                                    <div className="step active">
-                                        <form onSubmit={handlePhoneSubmit}>
-                                            <div className="field">
-                                                <label htmlFor="modal-phone" style={{ fontSize: "12px", fontWeight: "600", color: "var(--navy)", display: "block", marginBottom: "5px" }}>Your Phone Number</label>
-                                                <div className="phone-row">
-                                                    <span className="phone-prefix" aria-hidden="true">🇮🇳 +91</span>
-                                                    <input id="modal-phone" type="tel" className="phone-input" placeholder="Enter 10-digit number" maxLength={10} required value={phone} onChange={(e) => setPhone(e.target.value)} autoComplete="tel" />
-                                                </div>
-                                            </div>
-                                            <button type="submit" className="submit-btn" disabled={phone.length < 10 || isSubmittingPhone}>
-                                                {isSubmittingPhone ? 'Continuing...' : 'Continue'}
-                                                {!isSubmittingPhone && <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>}
-                                            </button>
-                                        </form>
-                                    </div>
-                                )}
-                                {formStep === 'details' && (
-                                    <div className="step active">
-                                        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px" }}>
-                                            <button type="button" aria-label="Go back" onClick={() => setFormStep('phone')} style={{ background: "#f1f5f9", border: "none", borderRadius: "50%", width: "28px", height: "28px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
-                                                <svg width="13" height="13" fill="none" stroke="#475569" strokeWidth="2.5" viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6" /></svg>
-                                            </button>
-                                            <div>
-                                                <div className="hfc-title" style={{ fontSize: "16px", margin: 0 }}>Almost There!</div>
-                                                <p className="hfc-sub" style={{ margin: 0 }}>Share details to match the best spaces</p>
-                                            </div>
-                                        </div>
-                                        <form onSubmit={handleDetailsSubmit}>
-                                            <div className="grid-2" style={{ marginBottom: "10px" }}>
-                                                <div className="field" style={{ marginBottom: "0" }}>
-                                                    <label htmlFor="modal-name" className="sr-only">Your Name</label>
-                                                    <input id="modal-name" type="text" className="form-input" required placeholder="Your Name" value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" />
-                                                </div>
-                                                <div className="field" style={{ marginBottom: "0" }}>
-                                                    <label htmlFor="modal-company" className="sr-only">Company Name</label>
-                                                    <input id="modal-company" type="text" className="form-input" required placeholder="Company Name" value={companyName} onChange={(e) => setCompanyName(e.target.value)} autoComplete="organization" />
-                                                </div>
-                                            </div>
-                                            <div className="field" style={{ marginBottom: "10px" }}>
-                                                <label htmlFor="modal-email" className="sr-only">Work Email</label>
-                                                <input id="modal-email" type="email" className="form-input" required placeholder="Work Email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
-                                            </div>
-                                            <div className="field">
-                                                <label htmlFor="modal-teamsize" className="sr-only">Team Size</label>
-                                                <select id="modal-teamsize" className="form-input" required style={{ appearance: "none", background: "#fff", color: "var(--text-2)" }} value={teamSize} onChange={(e) => setTeamSize(e.target.value)}>
-                                                    <option value="" disabled>Team Size</option>
-                                                    <option value="1-10">1–10 employees</option>
-                                                    <option value="10-50">10–50 employees</option>
-                                                    <option value="50-100">50–100 employees</option>
-                                                    <option value="100+">100+ employees</option>
-                                                </select>
-                                            </div>
-                                            <button type="submit" className="submit-btn" style={{ marginTop: "16px" }} disabled={isSubmitting}>
-                                                {isSubmitting ? 'Sending...' : 'Get Verified Office Options'}
-                                                {!isSubmitting && <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>}
-                                            </button>
-                                        </form>
-                                    </div>
-                                )}
-                            </div>
-                        ) : (
-                            <div id="m-success" className="success-card">
-                                <div className="success-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg></div>
-                                <h3>We'll Be in Touch Soon!</h3>
-                                <p>Our workspace advisors will share verified options within 24–48 hours.</p>
-                            </div>
-                        )}
-                        <div className="nm-footer">
-                            <p className="nm-footer-text">Prefer instant help? Call or WhatsApp us directly.</p>
-                            <div className="nm-action-btns">
-                                <a href="tel:+917993726302" className="nm-action-btn nm-btn-blue">
-                                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.69 19a19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
-                                    Call Now
-                                </a>
-                                <a href="https://wa.me/918978426302?text=Hello,%20I%20would%20like%20to%20inquire%20about%20managed%20office%20spaces%20in%20Hyderabad." target="_blank" rel="noopener noreferrer" className="nm-action-btn nm-btn-green">
-                                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" /></svg>
-                                    WhatsApp Chat
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <LeadCaptureModal 
+                isOpen={modalOpen} 
+                onClose={closeModal} 
+                source="7 Things Checklist Page" 
+                title="Get Verified Managed Office Options in 24 Hours" 
+                subtitle="Confirmed office spaces in top Hyderabad locations. No brokerage fees." 
+            />
 
             <main id="main-content">
 
@@ -416,16 +148,27 @@ export default function ManagedOfficeChecklistPage() {
                                 </div>
                             </div>
 
-                            {/* Right: Lead form */}
-                            <div className="hide-on-mobile">
                                 <div className="hero-form-card">
                                     <div className="hfc-accent"></div>
                                     <div className="hfc-body">
                                         <span className="urgency-badge">Limited: Free Consultation This Week</span>
-                                        <LeadForm idPrefix="hero" />
+                                        <LeadCaptureForm 
+                                            source="7 Things Checklist Page" 
+                                            title="Get Verified Managed Office Options" 
+                                            subtitle="No brokerage · Verified spaces · 24–48 hr delivery" 
+                                            showTrustBadges={true} 
+                                        />
+                                        <div className="social-proof" style={{ marginTop: '20px' }}>
+                                            <div className="avatar-stack" aria-hidden="true">
+                                                <div className="avatar" style={{ background: "#2563eb" }}>A</div>
+                                                <div className="avatar" style={{ background: "#059669" }}>M</div>
+                                                <div className="avatar" style={{ background: "#d97706" }}>S</div>
+                                                <div className="avatar" style={{ background: "#7c3aed" }}>R</div>
+                                            </div>
+                                            <p className="sp-text"><b>200+ businesses</b> found offices through PrimeDesk</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                         </div>
                     </div>
 

@@ -4,32 +4,15 @@ import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import AuthorCard from '@/components/AuthorCard';
 import Image from 'next/image';
-import { getLeadsApiBase } from '@/lib/leadsApi';
 import dynamic from 'next/dynamic';
+import LeadCaptureForm from '@/components/LeadCaptureForm';
+import LeadCaptureModal from '@/components/LeadCaptureModal';
 
 const ShareBar = dynamic(() => import('@/components/ShareBar'), { ssr: false });
 export default function ManagedVsCoworkingPage() {
     const [modalOpen, setModalOpen] = useState(false);
-    const [formStep, setFormStep] = useState('phone');
-    const [phone, setPhone] = useState('');
-    const [name, setName] = useState('');
-    const [companyName, setCompanyName] = useState('');
-    const [email, setEmail] = useState('');
-    const [teamSize, setTeamSize] = useState('');
-    const [leadId, setLeadId] = useState(null);
-    const [isSubmittingPhone, setIsSubmittingPhone] = useState(false);
-    const [isSubmitting, setIsSubmitting] = useState(false);
     const [activeSection, setActiveSection] = useState(null);
     const [openFaq, setOpenFaq] = useState(null);
-    const abandonTimer = useRef(null);
-    const emailjsRef = useRef(null);
-    // Initialize EmailJS lazily
-    useEffect(() => {
-        import('@emailjs/browser').then((mod) => {
-            emailjsRef.current = mod.default;
-            emailjsRef.current.init(process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
-        });
-    }, []);
     useEffect(() => {
         const handleScroll = () => { };
         window.addEventListener('scroll', handleScroll, { passive: true });
@@ -59,113 +42,7 @@ export default function ManagedVsCoworkingPage() {
             tocObs.disconnect();
         };
     }, []);
-    const handlePhoneSubmit = async (e) => {
-        e.preventDefault();
-        if (phone.length < 10) return;
-        const apiBase = getLeadsApiBase();
-        if (!apiBase) {
-            alert(
-                'Leads API is not configured. Add NEXT_PUBLIC_API_BASE_URL in Vercel (your public HTTPS API URL).'
-            );
-            return;
-        }
-        setIsSubmittingPhone(true);
-        try {
-            const response = await fetch(`${apiBase}/api/leads`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phone, source: 'Managed vs Coworking Page' }),
-            });
-            const data = await response.json();
-            if (response.ok && data.success) {
-                setLeadId(data.leadId);
-                setFormStep('details');
-                abandonTimer.current = setTimeout(() => {
-                    emailjsRef.current?.send(
-                        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
-                        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_ABANDON,
-                        { type: 'Abandoned Lead (Step 1 Only)', phone, name: 'Not provided', email: 'Not provided', company: 'Not provided', team_size: 'Not provided', source: 'Managed vs Coworking Page' }
-                    ).catch((e) => console.error('EmailJS Error:', e?.text || JSON.stringify(e)));
-                }, 60000);
-            } else {
-                alert('Failed to capture details: ' + (data.message || 'Unknown error'));
-            }
-        } catch (err) {
-            console.error('Error submitting phone:', err);
-            setFormStep('details');
-        } finally {
-            setIsSubmittingPhone(false);
-        }
-    };
-    const handleDetailsSubmit = async (e) => {
-        e.preventDefault();
-        if (!leadId) return submitNewLead();
-        const apiBase = getLeadsApiBase();
-        if (!apiBase) {
-            alert(
-                'Leads API is not configured. Add NEXT_PUBLIC_API_BASE_URL in Vercel (your public HTTPS API URL).'
-            );
-            return;
-        }
-        setIsSubmitting(true);
-        try {
-            const response = await fetch(`${apiBase}/api/leads/${leadId}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email, companyName, teamSize }),
-            });
-            if (response.ok) {
-                setFormStep('success');
-                if (abandonTimer.current) clearTimeout(abandonTimer.current);
-                emailjsRef.current?.send(
-                    process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
-                    process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_COMPLETE,
-                    { type: 'Complete Lead', phone, name, email, company: companyName, team_size: teamSize, source: 'Managed vs Coworking Page' }
-                ).catch((e) => console.error('EmailJS Error:', e?.text || JSON.stringify(e)));
-            } else {
-                const data = await response.json();
-                alert('Failed to submit form: ' + (data.message || 'Unknown error'));
-            }
-        } catch (err) {
-            console.error('Error updating form:', err);
-            alert('An error occurred submitting the form. Ensure backend is running.');
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
-    const submitNewLead = async () => {
-        const apiBase = getLeadsApiBase();
-        if (!apiBase) {
-            alert(
-                'Leads API is not configured. Add NEXT_PUBLIC_API_BASE_URL in Vercel (your public HTTPS API URL).'
-            );
-            return;
-        }
-        setIsSubmitting(true);
-        try {
-            const response = await fetch(`${apiBase}/api/leads`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email, phone, companyName, teamSize, source: 'Managed vs Coworking Page' }),
-            });
-            if (response.ok) {
-                setFormStep('success');
-                emailjsRef.current?.send(
-                    process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
-                    process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_COMPLETE,
-                    { type: 'Complete Lead', phone, name, email, company: companyName, team_size: teamSize, source: 'Managed vs Coworking Page' }
-                ).catch((e) => console.error('EmailJS Error:', e?.text || JSON.stringify(e)));
-            } else {
-                const data = await response.json();
-                alert('Failed to submit form: ' + (data.message || 'Unknown error'));
-            }
-        } catch (err) {
-            console.error('Error submitting form:', err);
-            alert('An error occurred submitting the form. Ensure backend is running.');
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
+
     const openModal = (e) => {
         if (e) e.preventDefault();
         setModalOpen(true);
@@ -209,119 +86,12 @@ export default function ManagedVsCoworkingPage() {
                     </button>
                 </div>
             </div>
-            {/* â•â•â•â•â•â• MODAL â•â•â•â•â•â• */}
-            <div
-                className={`modal-overlay ${modalOpen ? 'open' : ''}`}
-                id="modal"
-                role="dialog"
-                aria-modal="true"
-                aria-label="Lead capture form"
-            >
-                <div className="modal-box">
-                    <div className="modal-top"></div>
-                    <button className="modal-close" onClick={closeModal} aria-label="Close dialog">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
-                    </button>
-                    <div className="modal-body">
-                        {formStep !== 'success' ? (
-                            <div id="m-form-wrap">
-                                <p className="modal-tag">PrimeDesk · Zero Brokerage</p>
-                                <h2 className="modal-title">Get Expert Workspace Advice in 24 Hours</h2>
-                                <p className="modal-sub">Personalized office suggestions based on your team size, budget, and growth plans.</p>
-                                <div
-                                    className="prog-wrap"
-                                    role="progressbar"
-                                    aria-valuenow={formStep === 'phone' ? 50 : 100}
-                                    aria-valuemin={0}
-                                    aria-valuemax={100}
-                                    aria-label="Form progress"
-                                >
-                                    <div className="prog-bar" style={{ width: formStep === 'phone' ? '50%' : '100%' }}></div>
-                                </div>
-                                {formStep === 'phone' && (
-                                    <div className="step active">
-                                        <form onSubmit={handlePhoneSubmit}>
-                                            <div className="field">
-                                                <label htmlFor="modal-phone" style={{ fontSize: "12px", fontWeight: "600", color: "var(--navy)", display: "block", marginBottom: "5px" }}>Your Phone Number</label>
-                                                <div className="phone-row">
-                                                    <span className="phone-prefix" aria-hidden="true">+91</span>
-                                                    <input id="modal-phone" type="tel" className="phone-input" placeholder="Enter 10-digit number" maxLength={10} required value={phone} onChange={(e) => setPhone(e.target.value)} autoComplete="tel" />
-                                                </div>
-                                            </div>
-                                            <button type="submit" className="submit-btn" disabled={phone.length < 10 || isSubmittingPhone}>
-                                                {isSubmittingPhone ? 'Continuing...' : 'Continue'}
-                                                {!isSubmittingPhone && <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>}
-                                            </button>
-                                        </form>
-                                    </div>
-                                )}
-                                {formStep === 'details' && (
-                                    <div className="step active">
-                                        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px" }}>
-                                            <button type="button" aria-label="Go back to phone number step" onClick={() => setFormStep('phone')} style={{ background: "#f1f5f9", border: "none", borderRadius: "50%", width: "28px", height: "28px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
-                                                <svg width="13" height="13" fill="none" stroke="#475569" strokeWidth="2.5" viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6" /></svg>
-                                            </button>
-                                            <div>
-                                                <div className="hfc-title" style={{ fontSize: "16px", margin: 0 }}>Almost There!</div>
-                                                <p className="hfc-sub" style={{ margin: 0 }}>Share a few details for the best match</p>
-                                            </div>
-                                        </div>
-                                        <form onSubmit={handleDetailsSubmit}>
-                                            <div className="grid-2" style={{ marginBottom: "10px" }}>
-                                                <div className="field" style={{ marginBottom: "0" }}>
-                                                    <label htmlFor="modal-name" className="sr-only">Your Name</label>
-                                                    <input id="modal-name" type="text" className="form-input" required placeholder="Your Name" value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" />
-                                                </div>
-                                                <div className="field" style={{ marginBottom: "0" }}>
-                                                    <label htmlFor="modal-company" className="sr-only">Company Name</label>
-                                                    <input id="modal-company" type="text" className="form-input" required placeholder="Company Name" value={companyName} onChange={(e) => setCompanyName(e.target.value)} autoComplete="organization" />
-                                                </div>
-                                            </div>
-                                            <div className="field" style={{ marginBottom: "10px" }}>
-                                                <label htmlFor="modal-email" className="sr-only">Work Email</label>
-                                                <input id="modal-email" type="email" className="form-input" required placeholder="Work Email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
-                                            </div>
-                                            <div className="field">
-                                                <label htmlFor="modal-teamsize" className="sr-only">Team Size</label>
-                                                <select id="modal-teamsize" className="form-input" required style={{ appearance: "none", background: "#fff", color: "var(--text-2)" }} value={teamSize} onChange={(e) => setTeamSize(e.target.value)}>
-                                                    <option value="" disabled>Team Size</option>
-                                                    <option value="1-5">1–5 employees</option>
-                                                    <option value="5-15">5–15 employees</option>
-                                                    <option value="15-50">15–50 employees</option>
-                                                    <option value="50+">50+ employees</option>
-                                                </select>
-                                            </div>
-                                            <button type="submit" className="submit-btn" style={{ marginTop: "16px" }} disabled={isSubmitting}>
-                                                {isSubmitting ? 'Sending...' : 'Get Free Expert Advice'}
-                                                {!isSubmitting && <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>}
-                                            </button>
-                                        </form>
-                                    </div>
-                                )}
-                            </div>
-                        ) : (
-                            <div id="m-success" className="success-card">
-                                <div className="success-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg></div>
-                                <h3>We'll Be in Touch Soon!</h3>
-                                <p>Our workspace advisors will share personalized options within 24–48 hours.</p>
-                            </div>
-                        )}
-                        <div className="nm-footer">
-                            <p className="nm-footer-text">Prefer instant help? Call or WhatsApp us directly.</p>
-                            <div className="nm-action-btns">
-                                <a href="tel:+917993726302" className="nm-action-btn nm-btn-blue">
-                                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.69 19a19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
-                                    Call<span className="nm-mobile-hide">{' '}Now</span>
-                                </a>
-                                <a href="https://wa.me/918978426302?text=Hello,%20I%20would%20like%20to%20inquire%20about%20office%20spaces%20in%20Hyderabad." target="_blank" rel="noopener noreferrer" className="nm-action-btn nm-btn-green">
-                                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" /></svg>
-                                    WhatsApp<span className="nm-mobile-hide">{' '}Chat</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {/* â• â• â• â• â• â•  MODAL â• â• â• â• â• â•  */}
+            <LeadCaptureModal
+                isOpen={modalOpen}
+                onClose={closeModal}
+                source="Managed vs Coworking Page"
+            />
             <main id="main-content">
             {/* â•â•â•â•â•â• HERO â•â•â•â•â•â• */}
             <header className="hero" style={{ paddingTop: '90px' }}>
@@ -360,92 +130,12 @@ export default function ManagedVsCoworkingPage() {
                                 <div className="hfc-accent"></div>
                                 <div className="hfc-body">
                                     <span className="urgency-badge">Limited: Free Consultation This Week</span>
-                                    <div
-                                        className="prog-wrap"
-                                        role="progressbar"
-                                        aria-valuenow={formStep === 'phone' ? 50 : 100}
-                                        aria-valuemin={0}
-                                        aria-valuemax={100}
-                                        aria-label="Form progress"
-                                    >
-                                        <div className="prog-bar" style={{ width: formStep === 'phone' ? '50%' : '100%' }}></div>
-                                    </div>
-                                    {formStep === 'phone' && (
-                                        <div className="step active">
-                                            <div className="hfc-title">Find the Right Workspace for Your Startup</div>
-                                            <p className="hfc-sub">Personalized suggestions · Zero brokerage · 24–48 hr delivery</p>
-                                            <form onSubmit={handlePhoneSubmit}>
-                                                <div className="field">
-                                                    <label htmlFor="hero-phone">Your Phone Number</label>
-                                                    <div className="phone-row">
-                                                        <span className="phone-prefix" aria-hidden="true">+91</span>
-                                                        <input id="hero-phone" type="tel" className="phone-input" placeholder="Enter 10-digit number" maxLength={10} required value={phone} onChange={(e) => setPhone(e.target.value)} autoComplete="tel" />
-                                                    </div>
-                                                </div>
-                                                <button type="submit" className="submit-btn" disabled={phone.length < 10 || isSubmittingPhone}>
-                                                    {isSubmittingPhone ? 'Sending...' : 'Get Free Expert Advice'}
-                                                    {!isSubmittingPhone && <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>}
-                                                </button>
-                                            </form>
-                                            <div className="form-trust">
-                                                <div className="form-trust-item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>No Spam</div>
-                                                <div className="form-trust-item"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>24hr Turnaround</div>
-                                                <div className="form-trust-item"><svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>Zero Brokerage</div>
-                                            </div>
-                                        </div>
-                                    )}
-                                    {formStep === 'details' && (
-                                        <div className="step active">
-                                            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px" }}>
-                                                <button type="button" aria-label="Go back to phone number step" onClick={() => setFormStep('phone')} style={{ background: "#f1f5f9", border: "none", borderRadius: "50%", width: "28px", height: "28px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
-                                                    <svg width="13" height="13" fill="none" stroke="#475569" strokeWidth="2.5" viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6" /></svg>
-                                                </button>
-                                                <div>
-                                                    <div className="hfc-title" style={{ fontSize: "16px", margin: 0 }}>Almost There!</div>
-                                                    <p className="hfc-sub" style={{ margin: "0" }}>Share details to match the best spaces</p>
-                                                </div>
-                                            </div>
-                                            <form onSubmit={handleDetailsSubmit}>
-                                                <div className="grid-2" style={{ marginBottom: "10px" }}>
-                                                    <div className="field" style={{ marginBottom: "0" }}>
-                                                        <label htmlFor="hero-name" className="sr-only">Your Name</label>
-                                                        <input id="hero-name" type="text" className="form-input" required placeholder="Your Name" value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" />
-                                                    </div>
-                                                    <div className="field" style={{ marginBottom: "0" }}>
-                                                        <label htmlFor="hero-company" className="sr-only">Company Name</label>
-                                                        <input id="hero-company" type="text" className="form-input" required placeholder="Company Name" value={companyName} onChange={(e) => setCompanyName(e.target.value)} autoComplete="organization" />
-                                                    </div>
-                                                </div>
-                                                <div className="field" style={{ marginBottom: "10px" }}>
-                                                    <label htmlFor="hero-email" className="sr-only">Work Email</label>
-                                                    <input id="hero-email" type="email" className="form-input" required placeholder="Work Email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
-                                                </div>
-                                                <div className="field">
-                                                    <label htmlFor="hero-teamsize" className="sr-only">Team Size</label>
-                                                    <select id="hero-teamsize" className="form-input" required style={{ appearance: "none", background: "#fff", color: "var(--text-2)" }} value={teamSize} onChange={(e) => setTeamSize(e.target.value)}>
-                                                        <option value="" disabled>Team Size</option>
-                                                        <option value="1-5">1–5 employees</option>
-                                                        <option value="5-15">5–15 employees</option>
-                                                        <option value="15-50">15–50 employees</option>
-                                                        <option value="50+">50+ employees</option>
-                                                    </select>
-                                                </div>
-                                                <button type="submit" className="submit-btn" style={{ marginTop: "16px" }} disabled={isSubmitting}>
-                                                    {isSubmitting ? 'Sending...' : 'Get My Office Options'}
-                                                    {!isSubmitting && <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>}
-                                                </button>
-                                            </form>
-                                        </div>
-                                    )}
-                                    {formStep === 'success' && (
-                                        <div className="step active">
-                                            <div className="success-card">
-                                                <div className="success-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg></div>
-                                                <h3>We'll Call You Shortly!</h3>
-                                                <p>Our advisor will share curated options within 24 hours.</p>
-                                            </div>
-                                        </div>
-                                    )}
+                                    <LeadCaptureForm 
+                                        source="Managed vs Coworking Page"
+                                        title="Find the Right Workspace for Your Startup"
+                                        subtitle="Personalized suggestions · Zero brokerage · 24–48 hr delivery"
+                                        showTrustBadges={true}
+                                    />
                                     <div className="social-proof">
                                         <div className="avatar-stack" aria-hidden="true">
                                             <div className="avatar" style={{ background: "#2563eb" }}>A</div>
