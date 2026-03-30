@@ -52,6 +52,18 @@ const BLOGS = [
     href: '/blogs/managed-vs-coworking',
     image: '/images/office1.png',
   },
+  {
+    id: 3,
+    title: '7 Things to Check Before Renting Managed Office Space in Hyderabad',
+    description:
+      'Location, connectivity, meeting rooms, lease flexibility, security, scalability, and total cost—what to verify before you sign.',
+    date: 'Mar 30, 2026',
+    readTime: '8 min read',
+    author: 'PrimeDesk Team',
+    tag: 'Hyderabad',
+    href: '/blogs/things-to-check-before-renting-managed-office-space-hyderabad',
+    image: '/images/hero_managed_office_checklist.webp',
+  },
 ];
 
 export default function BlogsPage() {
