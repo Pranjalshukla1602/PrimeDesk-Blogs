@@ -27,6 +27,7 @@ export default function sitemap() {
     { path: '/blogs/gcc-offices-hyderabad/', priority: 0.8, changeFrequency: 'monthly' },
     { path: '/blogs/managed-vs-coworking/', priority: 0.8, changeFrequency: 'monthly' },
     { path: '/blogs/things-to-check-before-renting-managed-office-space-hyderabad/', priority: 0.8, changeFrequency: 'monthly' },
+    { path: '/blogs/managed-office-spaces-hyderabad/', priority: 0.8, changeFrequency: 'monthly' },
   ];
 
   return routes.map((route) => ({

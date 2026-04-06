@@ -29,6 +29,18 @@ export const metadata: Metadata = {
 
 const BLOGS = [
   {
+    id: 4,
+    title: 'Why Managed Office Spaces Are Replacing Traditional Offices in Hyderabad',
+    description:
+      'Companies in Hyderabad are moving to managed office spaces because they are cheaper to set up, faster to move into, and easier to scale. Zero brokerage, options in 24 hours.',
+    date: 'Apr 6, 2026',
+    readTime: '9 min read',
+    author: 'Vibhuti Jain',
+    tag: 'Workspace Strategy',
+    href: '/blogs/managed-office-spaces-hyderabad',
+    image: '/images/hero_managed_office_spaces.jpeg',
+  },
+  {
     id: 1,
     title: 'Hyderabad: The Rising Hub for Global Capability Centres in India',
     description:
