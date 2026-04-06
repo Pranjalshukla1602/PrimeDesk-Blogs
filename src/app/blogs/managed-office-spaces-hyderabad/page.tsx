@@ -22,7 +22,7 @@ export const metadata: Metadata = {
         description:
             'Find managed office spaces in Hyderabad that are cheaper, faster to move into, and scalable. Zero brokerage, curated options in 24–48 hours.',
         type: 'article',
-        url: 'https://primedesk.co.in/managed-office-spaces-hyderabad/',
+        url: 'https://blogs.primedesk.co.in/blogs/managed-office-spaces-hyderabad/',
         siteName: 'PrimeDesk',
         images: [
             {
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
         images: ['https://primedesk.co.in/images/hero_managed_office_spaces.jpeg'],
     },
     alternates: {
-        canonical: 'https://primedesk.co.in/managed-office-spaces-hyderabad/',
+        canonical: 'https://blogs.primedesk.co.in/blogs/managed-office-spaces-hyderabad/',
     },
 };
 
@@ -52,7 +52,7 @@ export default function Page() {
         '@type': 'Article',
         mainEntityOfPage: {
             '@type': 'WebPage',
-            '@id': 'https://primedesk.co.in/managed-office-spaces-hyderabad/',
+            '@id': 'https://blogs.primedesk.co.in/blogs/managed-office-spaces-hyderabad/',
         },
         headline: 'Why Managed Office Spaces Are Replacing Traditional Offices in Hyderabad',
         description:
